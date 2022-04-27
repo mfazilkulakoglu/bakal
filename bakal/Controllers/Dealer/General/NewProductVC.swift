@@ -9,11 +9,28 @@ import UIKit
 
 class NewProductVC: UIViewController {
     
+    static let initializer = "NewProductVC"
+    
     private let productPhoto: UIImageView = {
         let image = UIImageView(image: UIImage(systemName: "plus.circle.fill"))
         image.isUserInteractionEnabled = true
         image.contentMode = .scaleAspectFit
         return image
+    }()
+    
+    private let productCategoryeText: UITextField = {
+        let field = UITextField()
+        field.textAlignment = .center
+        field.placeholder = "Product Category..."
+        field.layer.masksToBounds = true
+        field.layer.cornerRadius = 8.0
+        field.layer.borderWidth = 1.0
+        field.layer.borderColor = UIColor.lightGray.cgColor
+        field.autocorrectionType = .no
+        field.autocapitalizationType = .none
+        field.returnKeyType = .continue
+        field.backgroundColor = .secondarySystemBackground
+        return field
     }()
     
     private let productNameText: UITextField = {
@@ -113,14 +130,13 @@ class NewProductVC: UIViewController {
         button.layer.masksToBounds = true
         button.backgroundColor = .systemBlue
         button.setTitleColor(.white, for: .normal)
-//        button.isEnabled = false
+        //        button.isEnabled = false
         return button
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        title = "New Product"
         unitPicker.delegate = self
         unitPicker.dataSource = self
         productUnitTypeText.inputView = unitPicker
@@ -144,8 +160,12 @@ class NewProductVC: UIViewController {
                                     y: tabBarHeight + 20,
                                     width: view.width/3,
                                     height: view.width/3)
+        productCategoryeText.frame = CGRect(x: 25,
+                                            y: productPhoto.bottom + 20,
+                                            width: view.width - 50,
+                                            height: 42)
         productNameText.frame = CGRect(x: 25,
-                                       y: productPhoto.bottom + 20,
+                                       y: productCategoryeText.bottom + 10,
                                        width: view.width - 50,
                                        height: 42)
         productCommentText.frame = CGRect(x: 25,
@@ -176,6 +196,7 @@ class NewProductVC: UIViewController {
     
     func addSubviews() {
         view.addSubview(productPhoto)
+        view.addSubview(productCategoryeText)
         view.addSubview(productNameText)
         view.addSubview(productCommentText)
         view.addSubview(productUnitText)
@@ -208,11 +229,16 @@ class NewProductVC: UIViewController {
     
     @objc func tappedSaveButton() {
         
+        productCategoryeText.resignFirstResponder()
         productNameText.resignFirstResponder()
         productCommentText.resignFirstResponder()
         productUnitText.resignFirstResponder()
         productPriceText.resignFirstResponder()
         
+        guard productCategoryeText.text != nil && productCategoryeText.text != "" else {
+            makeAlert(title: "Error", message: "Type your product's category name!")
+            return
+        }
         guard productNameText.text != nil && productNameText.text != "" else {
             makeAlert(title: "Error", message: "Type your product name!")
             return
@@ -230,16 +256,52 @@ class NewProductVC: UIViewController {
             return
         }
         
-        
-        
+        StorageManager.shared.uplooadModelPhoto(image: self.productPhoto.image!) { link in
+            if link != nil {
+                let imageLink = link
+                DispatchQueue.main.async {
+                    let product = ProductModel(UUID().uuidString,
+                                               self.productCategoryeText.text!,
+                                               self.productNameText.text!,
+                                               self.productCommentText.text!,
+                                               self.productUnitText.text!,
+                                               self.productUnitTypeText.text!,
+                                               imageLink!,
+                                               self.productPriceText.text!,
+                                               self.stockButton.title(for: .normal)!)
+                    DatabaseManager.shared.saveProducts(categoryName: self.productCategoryeText.text!, product: product) { success in
+                        if success {
+                            self.dismiss(animated: true)
+                        } else {
+                            self.makeAlert(title: "Error", message: "Could not save product")
+                        }
+                    }
+                }
+            } else {
+                self.makeAlert(title: "Error", message: "Image could not save")
+            }
+        }
     }
+    
+    //    init(categoryTitle?: String, product?: ProductModel) {
+    //        self.categoryTitle = categoryTitle
+    //        self.product = product
+    //        super.init(nibName: nil, bundle: nil)
+    //    }
+    //
+    //    required init?(coder: NSCoder) {
+    //        fatalError("init(coder:) has not been implemented")
+    //    }
+    
 }
 
 
 
 extension NewProductVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == productNameText {
+        if textField == productCategoryeText {
+            productNameText.becomeFirstResponder()
+        } else if textField == productNameText {
             productCommentText.becomeFirstResponder()
         } else if textField == productCommentText {
             productUnitText.becomeFirstResponder()
@@ -266,7 +328,7 @@ extension NewProductVC: UIPickerViewDelegate, UIPickerViewDataSource {
     }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
-            productUnitTypeText.text = unitArray[pickerView.selectedRow(inComponent: 0)]
+        productUnitTypeText.text = unitArray[pickerView.selectedRow(inComponent: 0)]
     }
 }
 

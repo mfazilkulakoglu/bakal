@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class ProductsCollectionViewCell: UICollectionViewCell {
     
@@ -37,7 +38,8 @@ class ProductsCollectionViewCell: UICollectionViewCell {
         self.labelPrice.text = String(model.productPrice)
         self.labelStatu.text = String(model.productStatu)
         self.labelUnitType.text = model.productUnitType
-        
+        self.imageView.sd_setImage(with: URL(string: model.productPhoto))
+        self.imageView.contentMode = .scaleAspectFill
     }
 
 }

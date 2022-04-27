@@ -57,5 +57,19 @@ extension UIViewController {
     }
 }
 
+extension NSDictionary {
+    var swiftDictionary: Dictionary<String, [ProductModel]> {
+        var swiftDictionary = Dictionary<String, [ProductModel]>()
+        
+        for key : Any in self.allKeys {
+            let stringKey = key as! String
+            if let keyValue = self.value(forKey: stringKey) {
+                swiftDictionary[stringKey] = (keyValue as! [ProductModel])
+            }
+        }
+        return swiftDictionary
+    }
+}
+
 //NotificationCenter.default.post(name: NSNotification.Name("newData") , object: nil)
 //NotificationCenter.default.addObserver(self, selector: #selector(getData), name: NSNotification.Name(rawValue: "newData"), object: nil)

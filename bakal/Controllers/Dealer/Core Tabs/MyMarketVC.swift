@@ -11,14 +11,12 @@ class MyMarketVC: UIViewController {
     
     static let shared = MyMarketVC()
     
-    public var categories = [String]()
-    
-    private var sections = [ProductMap]()
+    private var myMarket: Dictionary = [String : [ProductModel]]()
     
     private let headerPhoto: UIImageView = {
         let image = UIImageView(image: UIImage(systemName: "plus.circle.fill"))
         image.isUserInteractionEnabled = true
-        image.contentMode = .scaleToFill
+        image.contentMode = .scaleAspectFit
         return image
     }()
     
@@ -39,6 +37,7 @@ class MyMarketVC: UIViewController {
     private let categoryTableView: UITableView = {
         let tableView = UITableView()
         tableView.register(MyStoreCategoryTVCell.self, forCellReuseIdentifier: MyStoreCategoryTVCell.identifier)
+        tableView.register(ProductTableViewCell.nib(), forCellReuseIdentifier: ProductTableViewCell.identifier)
         return tableView
     }()
     
@@ -49,7 +48,7 @@ class MyMarketVC: UIViewController {
         let gesture = UITapGestureRecognizer(target: self, action: #selector(pickThePhoto))
         headerPhoto.addGestureRecognizer(gesture)
         
-        navigationController?.navigationBar.topItem?.rightBarButtonItem = UIBarButtonItem(title: "Add Category",
+        navigationController?.navigationBar.topItem?.rightBarButtonItem = UIBarButtonItem(title: "Add",
                                                                                           style: .plain,
                                                                                           target: self,
                                                                                           action: #selector(addNewCategoryCell))
@@ -58,9 +57,7 @@ class MyMarketVC: UIViewController {
         categoryTableView.delegate = self
         categoryTableView.dataSource = self
         statementText.delegate = self
-        
-      
-        
+        reloadData()
     }
     
     override func viewDidLayoutSubviews() {
@@ -80,9 +77,29 @@ class MyMarketVC: UIViewController {
                                          height: (view.height - tabBarHeight - 10) - (headerPhoto.bottom + 10))
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        reloadData()
+    }
     
     
-    func addSubviews() {
+    
+    private func reloadData() {
+            DatabaseManager.shared.getProducts { result in
+                self.myMarket.removeAll(keepingCapacity: false)
+                switch result {
+                case .failure(let error):
+                    self.makeAlert(title: "Error", message: error.localizedDescription )
+                case .success(let dictionary):
+                    if let dictionary = dictionary {
+                        self.myMarket = dictionary
+                    }
+                }
+            }
+        self.categoryTableView.reloadData()
+    }
+    
+    private func addSubviews() {
         view.addSubview(headerPhoto)
         view.addSubview(statementText)
         view.addSubview(categoryTableView)
@@ -98,21 +115,10 @@ class MyMarketVC: UIViewController {
     // MARK: ----- Add New Category -----
     
     @objc func addNewCategoryCell() {
-        let alert = UIAlertController(title: "Add Category",
-                                      message: "You can type the category name",
-                                      preferredStyle: .alert)
-        alert.addTextField()
-        alert.textFields![0].delegate = self
-        let action = UIAlertAction(title: "Add", style: .default) { success in
-            if alert.textFields![0].text! != "" {
-                let title = alert.textFields![0].text!
-            }
-            
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
-        alert.addAction(action)
-        alert.addAction(cancelAction)
-        self.present(alert, animated: true)
+        let vc = NewProductVC()
+        self.present(vc, animated: true)
+        self.categoryTableView.reloadData()
+        print(self.myMarket)
     }
     
 }
@@ -129,18 +135,24 @@ extension MyMarketVC: UIImagePickerControllerDelegate, UINavigationControllerDel
 extension MyMarketVC: UITableViewDelegate, UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
-        return self.sections.count
+        return (Array(self.myMarket.keys)).count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         if indexPath.row == 0 {
-            let cell = self.categoryTableView.dequeueReusableCell(withIdentifier: MyStoreCategoryTVCell.identifier) as! MyStoreCategoryTVCell
-            cell.categoryText.text = "Cell"
+            let cell = self.categoryTableView.dequeueReusableCell(withIdentifier: MyStoreCategoryTVCell.identifier, for: indexPath) as! MyStoreCategoryTVCell
+            cell.categoryText.text = (Array(self.myMarket.keys))[indexPath.section]
             cell.delegate = self
             return cell
         } else {
-            let cell = self.categoryTableView.dequeueReusableCell(withIdentifier: ProductTableViewCell.identifier) as! ProductTableViewCell
+            let cell = self.categoryTableView.dequeueReusableCell(withIdentifier: ProductTableViewCell.identifier, for: indexPath) as! ProductTableViewCell
             cell.delegate = self
+            var collectionArray = [ProductModel]()
+            for productX in self.myMarket["\((Array(self.myMarket.keys))[indexPath.section])"]! {
+                collectionArray.append(productX)
+            }
+            cell.configure(with: collectionArray)
             return cell
         }
     }
@@ -159,6 +171,13 @@ extension MyMarketVC: UITableViewDelegate, UITableViewDataSource {
             // delete on firebase
             
         }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.row != 0 {
+            return 260.0
+        }
+        return UITableView.automaticDimension
     }
     
 }
@@ -188,8 +207,7 @@ extension MyMarketVC: MyStoreCategoryTVCellDelegate {
 
 extension MyMarketVC: ProductTableViewCellDelegate {
     func tappedProductionCollection() {
-        let vc = NewProductVC()
-        self.present(vc, animated: true)
+        //        let vc = NewProductVC()
+        //        self.present(vc, animated: true)
     }
 }
-

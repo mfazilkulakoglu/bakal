@@ -9,12 +9,12 @@
 import Foundation
 import FirebaseFirestore
 
-
 public class DatabaseManager {
     static let shared = DatabaseManager()
     
     private let database = Firestore.firestore()
     private var reference: DocumentReference!
+    private var colReference: CollectionReference!
     
     public func insertNewUser(with email: String, accType: String, completion: @escaping (Bool) -> Void) {
         let key = email.safeDatabaseKey()
@@ -62,7 +62,7 @@ public class DatabaseManager {
         ]
         let key = storePost.email.safeDatabaseKey()
         reference = database.document("Stores/\(key)/\(storePost.id)/Settings")
-        reference.setData(firestoreStorePost) { error in
+        reference.setData(firestoreStorePost, merge: true) { error in
             if error != nil {
                 completion(false)
             } else {
@@ -90,119 +90,134 @@ public class DatabaseManager {
         }
     }
     
-    public func getCategories(completion: @escaping ([String], String, String) -> Void) {
+    //    public func getCategories(completion: @escaping ([String], String, String) -> Void) {
+    //        getAccountID { email, id in
+    //            guard email != "" && id != "" else {
+    //                completion([""], "", "")
+    //                return
+    //            }
+    //            let keyEmail = email.safeDatabaseKey()
+    //            let id = id
+    //            self.reference = self.database.document("Stores/\(keyEmail)/\(id)")
+    //            self.reference.getDocument { snapshot, error in
+    //                if snapshot == nil {
+    //                    completion([""], keyEmail, id)
+    //                } else {
+    //                    let result = snapshot?["Categories"] as? [String]
+    //                    completion(result ?? [""], keyEmail, id)
+    //                }
+    //            }
+    //        }
+    //    }
+    //
+    //    public func saveCategory(categoryName: String, completion: @escaping (Bool) -> Void) {
+    //        getCategories { categories, email, id in
+    //            if email == "" || id == "" {
+    //                completion(false)
+    //            } else if categories == [""] {
+    //                self.reference = self.database.document("Stores/\(email)/\(id)/\(categoryName)")
+    //                let data = ["Category Name" : categoryName]
+    //                self.reference.setData(data, merge: true) { error in
+    //                    if error != nil {
+    //                        completion(false)
+    //                    } else {
+    //                        completion(true)
+    //                    }
+    //                }
+    //            } else {
+    //                var newCategories = categories
+    //                newCategories.append(categoryName)
+    //                let data: [String : Any] = ["Categories" : newCategories]
+    //                self.reference = self.database.document("Stores/\(email)/\(id)/Categories")
+    //                self.reference.setData(data, merge: true) { error in
+    //                    if error != nil {
+    //                        completion(false)
+    //                    } else {
+    //                        completion(true)
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
+    
+    //    public func deleteCategory(selectedRow: Int, completion: @escaping (Bool) -> Void) {
+    //        getCategories { categories, email, id in
+    //            if email == "" || id == "" || categories == [""] {
+    //                completion(false)
+    //            } else {
+    //                var newCategories = categories
+    //                newCategories.remove(at: selectedRow)
+    //                let data: [String :Any] = ["Categories" : newCategories]
+    //                self.reference = self.database.document("Stores/\(email)/\(id)/Categories")
+    //                self.reference.setData(data, merge: true) { error in
+    //                    if error != nil {
+    //                        completion(false)
+    //                    } else {
+    //                        completion(true)
+    //                    }
+    //                }
+    //            }
+    //        }
+    //    }
+    
+    public func getProducts(completion: @escaping (Result<[String : [ProductModel]]?, FetchProductError>) -> Void) {
         getAccountID { email, id in
             guard email != "" && id != "" else {
-                completion([""], "", "")
+                completion(.failure(.accountInfo))
                 return
             }
-            let keyEmail = email.safeDatabaseKey()
-            let id = id
-            self.reference = self.database.document("Stores/\(keyEmail)/\(id)/Categories")
-            self.reference.getDocument { snapshot, error in
-                if snapshot == nil {
-                    completion([""], keyEmail, id)
-                } else {
-                    let result = snapshot?["Categories"] as? [String]
-                    completion(result ?? [""], keyEmail, id)
-                }
-            }
-        }
-    }
-    
-    public func saveCategory(categoryName: String, completion: @escaping (Bool) -> Void) {
-        getCategories { categories, email, id in
-            if email == "" || id == "" {
-                completion(false)
-            } else if categories == [""] {
-                let data: [String : Any] = ["Categories" : [categoryName]]
-                self.reference = self.database.document("Stores/\(email)/\(id)/Categories")
-                self.reference.setData(data, merge: true) { error in
-                    if error != nil {
-                        completion(false)
-                    } else {
-                        completion(true)
-                    }
-                }
-            } else {
-                var newCategories = categories
-                newCategories.append(categoryName)
-                let data: [String : Any] = ["Categories" : newCategories]
-                self.reference = self.database.document("Stores/\(email)/\(id)/Categories")
-                self.reference.setData(data, merge: true) { error in
-                    if error != nil {
-                        completion(false)
-                    } else {
-                        completion(true)
-                    }
-                }
-            }
-        }
-    }
-    
-    public func deleteCategory(selectedRow: Int, completion: @escaping (Bool) -> Void) {
-        getCategories { categories, email, id in
-            if email == "" || id == "" || categories == [""] {
-                completion(false)
-            } else {
-                var newCategories = categories
-                newCategories.remove(at: selectedRow)
-                let data: [String :Any] = ["Categories" : newCategories]
-                self.reference = self.database.document("Stores/\(email)/\(id)/Categories")
-                self.reference.setData(data, merge: true) { error in
-                    if error != nil {
-                        completion(false)
-                    } else {
-                        completion(true)
-                    }
-                }
-            }
-        }
-    }
-    
-    public func getProducts(completion: ((([ProductMap])?) -> Void)? = nil) {
-        getAccountID { email, id in
-            guard email != "" && id != "" else {
-                completion!(nil)
-                return
-            }
-            let keyEmail = email.safeDatabaseKey()
-            let id = id
-            let ref = self.database.collection("Stores/\(keyEmail)/\(id)/Products")
-            ref.addSnapshotListener { querrySnapshot, error in
-                guard let documents = querrySnapshot?.documents else {
-                    print("No documents")
-                    completion!(nil)
+            self.colReference = self.database.collection("Stores/\(id)/Products")
+            self.colReference.getDocuments { querrySnapshot, error in
+                guard error == nil else {
+                    completion(.failure(.badUrl))
                     return
                 }
-                if error != nil {
-                    completion!(nil)
-                } else {
-                    var products = [ProductMap]()
-                    products = documents.compactMap({ (queryDocumentSnapshot) -> ProductMap? in
-                        return try? queryDocumentSnapshot.data(as: ProductMap.self)
-//                        do {
-//                            return try queryDocumentSnapshot.data(as: ProductMap.self)
-//                        } catch {
-//                            completion!(nil)
-//                        }
-//                        let data = queryDocumentSnapshot.data()
-//                        let category = data["Product Category Name"] as? String ?? ""
-//                        let name = data["Product Name"] as? String ?? ""
-//                        let model = data["Product Map"]
-//
-//                        return ProductMap(proCategory: category, proName: name, model: model as! ProductModel)
-                    })
+                guard let data = querrySnapshot?.documents else {
+                    completion(.failure(.noData))
+                    return
                 }
+                var result = [String : [ProductModel]]()
+                for document in data {
+                    let product = document.data()
+                    
+                    let proModel = ProductModel(product["ID"]! as! String, product["Category"]! as! String, product["Name"]! as! String, product["Comment"]! as! String, product["Unit"]! as! String, product["Unit Type"]! as! String, product["Image Url"]! as! String, product["Price"]! as! String, product["Statu"]! as! String)
+                    if result[proModel.productCategory] != nil {
+                        result[proModel.productCategory]?.append(proModel)
+                    } else {
+                        result[proModel.productCategory] = [proModel]
+                    }
+                }
+                completion(.success(result))
             }
         }
     }
     
-    public func saveProducts(categoryName: String, modelName: String, model: ProductModel, completion: @escaping (Bool) -> Void) {
-        getProducts { products in
-    
+    public func saveProducts(categoryName: String, product: ProductModel, completion: @escaping (Bool) -> Void) {
+        getAccountID { email, id in
+            guard email != "" && id != "" else {
+                completion(false)
+                return
+            }
+            self.reference = self.database.document("Stores/\(id)/Products/\(product.id)")
+            let data = ["Category" : product.productCategory,
+                        "Name" : product.productName,
+                        "Comment" : product.productComment,
+                        "Unit" : product.productUnit,
+                        "Unit Type" : product.productUnitType,
+                        "Price" : product.productPrice,
+                        "Image Url" : product.productPhoto,
+                        "Statu" : product.productStatu,
+                        "ID" : product.id]
+            self.reference.setData(data)
+            completion(true)
+        
         }
     }
-    
- 
+}
+
+public enum FetchProductError : Error {
+    case accountInfo
+    case badUrl
+    case noData
+    case dataParseError
 }

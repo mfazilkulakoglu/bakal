@@ -9,15 +9,6 @@ import Foundation
 import UIKit
 import FirebaseFirestoreSwift
 
-//public enum ProductUnits {
-//    case t
-//    case kg
-//    case g
-//    case lt
-//    case ml
-//    case pcs
-//}
-
 public struct StoreModel {
     var email: String
     var id: String
@@ -39,8 +30,9 @@ public struct CategoryModel {
     var categoryName: String
 }
 
-public class ProductModel: Identifiable, Codable {
-    
+public struct ProductModel: Codable, Hashable, Equatable {
+
+    var id: String
     var productCategory: String
     var productName: String
     var productComment: String
@@ -48,42 +40,33 @@ public class ProductModel: Identifiable, Codable {
     var productUnitType: String
     var productPhoto: String
     var productPrice: String
-    var productStatu: Bool
+    var productStatu: String
     
+    init(_ id: String, _ productCategory: String, _ productName: String, _ productComment: String, _ productUnit: String, _ productUnitType: String, _ productPhoto: String, _ productPrice: String, _ productStatu: String)
+
+    {
+        self.id = id
+        self.productCategory = productCategory
+        self.productName = productName
+        self.productComment = productComment
+        self.productUnit = productUnit
+        self.productUnitType = productUnitType
+        self.productPhoto = productPhoto
+        self.productPrice = productPrice
+        self.productStatu = productStatu
+        
+    }
     
-    enum CodingKeys: String, CodingKey {
-        case productCategory = "Category Name"
+     enum CodingKeys : String, CodingKey {
+        case id = "ID"
+        case productCategory = "Category"
         case productName = "Name"
         case productComment = "Comment"
         case productUnit = "Unit"
-        case productUnitType = "Unit type"
-        case productPhoto = "Image"
+        case productUnitType = "Unit Type"
+        case productPhoto = "Image Url"
         case productPrice = "Price"
-        case productStatu = "Availability"
+        case productStatu = "Statu"
     }
 }
-
-public class ProductMap: Identifiable, Codable {
-    
-    var proCategory: String
-    var proName: String
-    var model: ProductModel
-    @DocumentID var productID: String? = UUID().uuidString
-    
-    init(proCategory: String, proName: String, model: ProductModel)
-    
-    {
-        self.proCategory = proCategory
-        self.proName = proName
-        self.model = model
-    }
-    
-    enum CodingKeys: String, CodingKey {
-        case proCategory = "Product Category Name"
-        case proName = "Product Name"
-        case model = "Product Map"
-    }
-}
-
-
 

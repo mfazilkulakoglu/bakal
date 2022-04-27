@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		7D82C2B73FB6B3E6D49CD24C /* Pods_bakal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 384315BBADD5EBAFADAD98E9 /* Pods_bakal.framework */; };
 		853FDF6D280453F700F8A2A7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 853FDF6C280453F700F8A2A7 /* GoogleService-Info.plist */; };
 		85543785280974480069A811 /* NewProductVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85543784280974480069A811 /* NewProductVC.swift */; };
 		855E1D7E2806E670001BC90D /* MyStoreCategoryTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 855E1D7D2806E670001BC90D /* MyStoreCategoryTVCell.swift */; };
@@ -33,12 +34,10 @@
 		85FB35D6281189D000E7E5CF /* ProductTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85FB35D4281189D000E7E5CF /* ProductTableViewCell.xib */; };
 		85FB35DB281193B700E7E5CF /* ProductsCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85FB35D9281193B700E7E5CF /* ProductsCollectionViewCell.swift */; };
 		85FB35DC281193B700E7E5CF /* ProductsCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 85FB35DA281193B700E7E5CF /* ProductsCollectionViewCell.xib */; };
-		D5DF86366EA36872AF0DD1A7 /* Pods_bakal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 51F3D9E822A343184A2A81F8 /* Pods_bakal.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		51F3D9E822A343184A2A81F8 /* Pods_bakal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bakal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		8309F75285ECD425B4266266 /* Pods-bakal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bakal.debug.xcconfig"; path = "Target Support Files/Pods-bakal/Pods-bakal.debug.xcconfig"; sourceTree = "<group>"; };
+		384315BBADD5EBAFADAD98E9 /* Pods_bakal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bakal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		853FDF6C280453F700F8A2A7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
 		85543784280974480069A811 /* NewProductVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewProductVC.swift; sourceTree = "<group>"; };
 		855E1D7D2806E670001BC90D /* MyStoreCategoryTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyStoreCategoryTVCell.swift; sourceTree = "<group>"; };
@@ -67,7 +66,8 @@
 		85FB35D4281189D000E7E5CF /* ProductTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductTableViewCell.xib; sourceTree = "<group>"; };
 		85FB35D9281193B700E7E5CF /* ProductsCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductsCollectionViewCell.swift; sourceTree = "<group>"; };
 		85FB35DA281193B700E7E5CF /* ProductsCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProductsCollectionViewCell.xib; sourceTree = "<group>"; };
-		89130111FD1BB07483BA33D9 /* Pods-bakal.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bakal.release.xcconfig"; path = "Target Support Files/Pods-bakal/Pods-bakal.release.xcconfig"; sourceTree = "<group>"; };
+		8BC06C602C09CB634FC0064B /* Pods-bakal.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bakal.release.xcconfig"; path = "Target Support Files/Pods-bakal/Pods-bakal.release.xcconfig"; sourceTree = "<group>"; };
+		BC90E8C3974BE25E6F8BDC74 /* Pods-bakal.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-bakal.debug.xcconfig"; path = "Target Support Files/Pods-bakal/Pods-bakal.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,20 +75,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D5DF86366EA36872AF0DD1A7 /* Pods_bakal.framework in Frameworks */,
+				7D82C2B73FB6B3E6D49CD24C /* Pods_bakal.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		47D455114488E30E0D5FEDAC /* Pods */ = {
+		4D7C4CD1239D30F0A41A6C52 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				8309F75285ECD425B4266266 /* Pods-bakal.debug.xcconfig */,
-				89130111FD1BB07483BA33D9 /* Pods-bakal.release.xcconfig */,
+				384315BBADD5EBAFADAD98E9 /* Pods_bakal.framework */,
 			);
-			path = Pods;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		855E1D7C2806E496001BC90D /* Cells */ = {
@@ -104,8 +103,8 @@
 			children = (
 				8597A79F280422F000C97BF4 /* bakal */,
 				8597A79E280422F000C97BF4 /* Products */,
-				47D455114488E30E0D5FEDAC /* Pods */,
-				DEB7198E6B8537DA549A70A6 /* Frameworks */,
+				B0BD8EB196C3715E0CD97839 /* Pods */,
+				4D7C4CD1239D30F0A41A6C52 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -279,12 +278,13 @@
 			path = "Collection View Cells";
 			sourceTree = "<group>";
 		};
-		DEB7198E6B8537DA549A70A6 /* Frameworks */ = {
+		B0BD8EB196C3715E0CD97839 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				51F3D9E822A343184A2A81F8 /* Pods_bakal.framework */,
+				BC90E8C3974BE25E6F8BDC74 /* Pods-bakal.debug.xcconfig */,
+				8BC06C602C09CB634FC0064B /* Pods-bakal.release.xcconfig */,
 			);
-			name = Frameworks;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -294,19 +294,17 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 8597A7B1280422F100C97BF4 /* Build configuration list for PBXNativeTarget "bakal" */;
 			buildPhases = (
-				2858F61D637C467F72057BE5 /* [CP] Check Pods Manifest.lock */,
+				E1999D1CA0D7DFC034430AEE /* [CP] Check Pods Manifest.lock */,
 				8597A799280422F000C97BF4 /* Sources */,
 				8597A79A280422F000C97BF4 /* Frameworks */,
 				8597A79B280422F000C97BF4 /* Resources */,
-				51C5E26293391077EA5DB13A /* [CP] Embed Pods Frameworks */,
+				A3E8DBC790935AD0A02A494A /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = bakal;
-			packageProductDependencies = (
-			);
 			productName = bakal;
 			productReference = 8597A79D280422F000C97BF4 /* bakal.app */;
 			productType = "com.apple.product-type.application";
@@ -335,8 +333,6 @@
 				Base,
 			);
 			mainGroup = 8597A794280422F000C97BF4;
-			packageReferences = (
-			);
 			productRefGroup = 8597A79E280422F000C97BF4 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -363,7 +359,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		2858F61D637C467F72057BE5 /* [CP] Check Pods Manifest.lock */ = {
+		A3E8DBC790935AD0A02A494A /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bakal/Pods-bakal-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-bakal/Pods-bakal-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bakal/Pods-bakal-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		E1999D1CA0D7DFC034430AEE /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -383,23 +396,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		51C5E26293391077EA5DB13A /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bakal/Pods-bakal-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-bakal/Pods-bakal-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-bakal/Pods-bakal-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -563,6 +559,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 15.4;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
@@ -572,7 +569,7 @@
 		};
 		8597A7B2280422F100C97BF4 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8309F75285ECD425B4266266 /* Pods-bakal.debug.xcconfig */;
+			baseConfigurationReference = BC90E8C3974BE25E6F8BDC74 /* Pods-bakal.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -592,6 +589,13 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-l\"sqlite3\"",
+					"-l\"z\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.FazilKulakoglu.bakal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
@@ -602,7 +606,7 @@
 		};
 		8597A7B3280422F100C97BF4 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 89130111FD1BB07483BA33D9 /* Pods-bakal.release.xcconfig */;
+			baseConfigurationReference = 8BC06C602C09CB634FC0064B /* Pods-bakal.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -622,6 +626,13 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-ObjC",
+					"-l\"c++\"",
+					"-l\"sqlite3\"",
+					"-l\"z\"",
+				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.FazilKulakoglu.bakal;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;

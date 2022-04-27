@@ -18,25 +18,27 @@ class ProductTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollect
     
     weak var delegate: ProductTableViewCellDelegate?
     
+    var models = [ProductModel]()
+    
+    @IBOutlet var productsCollectionView: UICollectionView!
+    
     static func nib() -> UINib {
         return UINib(nibName: "ProductTableViewCell", bundle: nil)
     }
     
-    func configure(with models: [ProductModel]) {
-        self.models = models
-        collectionView.reloadData()
-    }
     
-    @IBOutlet var collectionView: UICollectionView!
     
-    var models = [ProductModel]()
     
+      
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        collectionView.register(ProductsCollectionViewCell.nib(), forCellWithReuseIdentifier: ProductsCollectionViewCell.identifier)
-        collectionView.delegate = self
-        collectionView.dataSource = self
+        productsCollectionView.register(ProductsCollectionViewCell.nib(), forCellWithReuseIdentifier: ProductsCollectionViewCell.identifier)
+        productsCollectionView.delegate = self
+        productsCollectionView.dataSource = self
+        productsCollectionView.isUserInteractionEnabled = true
+//        let gestureRec = UITapGestureRecognizer(target: self,
+//                                                action: #selector(didTapCollViewCell))
     }
 
     override func setSelected(_ selected: Bool, animated: Bool) {
@@ -45,16 +47,21 @@ class ProductTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollect
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 1
+        return self.models.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductsCollectionViewCell.identifier, for: indexPath) as! ProductsCollectionViewCell
-        cell.configure(with: models[indexPath.row])
+        cell.configure(with: self.models[indexPath.row])
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 250, height: 250)
+    }
+    
+    func configure(with models: [ProductModel]) {
+        self.models = models
+        self.productsCollectionView.reloadData()
     }
 }
