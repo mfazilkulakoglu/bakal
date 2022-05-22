@@ -17,6 +17,13 @@ class ProductsCollectionViewCell: UICollectionViewCell {
     @IBOutlet var labelPrice: UILabel!
     @IBOutlet var labelStatu: UILabel!
     @IBOutlet var imageView: UIImageView!
+    @IBOutlet var deleteButton: UIButton!
+    
+    var deleteThisCell: (() -> Void)?
+    @IBAction func deletePressed(_ sender: Any) {
+        deleteThisCell?()
+    }
+    
     
     static let identifier = "ProductsCollectionViewCell"
     
@@ -29,6 +36,12 @@ class ProductsCollectionViewCell: UICollectionViewCell {
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        labelStatu.layer.masksToBounds = true
+        labelStatu.layer.cornerRadius = 6.0
+        
+        deleteButton.layer.masksToBounds = true
+        deleteButton.layer.cornerRadius = 8.0
+        
     }
     
     public func configure(with model: ProductModel) {
@@ -37,8 +50,15 @@ class ProductsCollectionViewCell: UICollectionViewCell {
         self.labelUnit.text = String(model.productUnit)
         self.labelPrice.text = String(model.productPrice)
         self.labelStatu.text = String(model.productStatu)
+        if self.labelStatu.text == "Available" {
+            self.labelStatu.textColor = .white
+            self.labelStatu.backgroundColor = .systemGreen
+        } else {
+            self.labelStatu.textColor = .white
+            self.labelStatu.backgroundColor = .systemRed
+        }
         self.labelUnitType.text = model.productUnitType
-        self.imageView.sd_setImage(with: URL(string: model.productPhoto))
+        self.imageView.sd_setImage(with: URL(string: model.productPhoto)) 
         self.imageView.contentMode = .scaleAspectFill
     }
 

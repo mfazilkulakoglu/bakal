@@ -53,9 +53,9 @@ class SettingsVC: UIViewController {
         return field
     }()
     
-    private let adressText: UITextField = {
+    private let addressText: UITextField = {
         let field = UITextField()
-        field.placeholder = "Adress..."
+        field.placeholder = "Address..."
         field.autocapitalizationType = .none
         field.autocorrectionType = .no
         field.leftViewMode = .always
@@ -119,7 +119,6 @@ class SettingsVC: UIViewController {
         field.backgroundColor = .systemBackground
         field.returnKeyType = .continue
         field.keyboardType = .numberPad
-        
         return field
     }()
     
@@ -173,6 +172,16 @@ class SettingsVC: UIViewController {
         return button
     }()
     
+    private let deleteAccountButton: UIButton = {
+        let button = UIButton()
+        button.setTitle("Delete", for: .normal)
+        button.layer.cornerRadius = 12.0
+        button.layer.masksToBounds = true
+        button.backgroundColor = .systemRed
+        button.setTitleColor(.white, for: .normal)
+        return button
+    }()
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         let tabBarHeight = self.tabBarController?.tabBar.frame.height ?? 49.0
@@ -184,12 +193,12 @@ class SettingsVC: UIViewController {
                                  y: storeType.bottom + 10,
                                  width: view.width - 50,
                                  height: 42)
-        adressText.frame = CGRect(x: 25,
+        addressText.frame = CGRect(x: 25,
                                   y: storeName.bottom + 10,
                                   width: view.width - 50,
                                   height: 42)
         phoneText.frame = CGRect(x: 25,
-                                 y: adressText.bottom + 10,
+                                 y: addressText.bottom + 10,
                                  width: view.width - 50,
                                  height: 42)
         priceText.frame = CGRect(x: 25,
@@ -208,8 +217,12 @@ class SettingsVC: UIViewController {
                                        y: distanceText.bottom + 10,
                                        width: priceText.width,
                                        height: 42)
+        deleteAccountButton.frame = CGRect(x: 25,
+                                           y: view.height - (50),
+                                           width: view.width - 50,
+                                           height: 40)
         saveButton.frame = CGRect(x: 25,
-                                  y: (view.height - 50 - tabBarHeight),
+                                  y: deleteAccountButton.top - 50,
                                   width: view.width - 50,
                                   height: 40)
         mapView.frame = CGRect(x: 25,
@@ -252,18 +265,23 @@ class SettingsVC: UIViewController {
         saveButton.addTarget(self,
                              action: #selector(didTapSaveButton),
                              for: .touchUpInside)
+        deleteAccountButton.addTarget(self,
+                                      action: #selector(didTapDeleteAccountButton),
+                                      for: .touchUpInside)
+        locationManager.stopUpdatingLocation()
     }
     
     func addSubviews() {
         view.addSubview(storeName)
         view.addSubview(storeType)
-        view.addSubview(adressText)
+        view.addSubview(addressText)
         view.addSubview(phoneText)
         view.addSubview(priceText)
         view.addSubview(distanceText)
         view.addSubview(openingTimeText)
         view.addSubview(closingTimeText)
         view.addSubview(saveButton)
+        view.addSubview(deleteAccountButton)
         view.addSubview(mapView)
     }
     
@@ -301,11 +319,29 @@ class SettingsVC: UIViewController {
         mapView.setRegion(region, animated: true)
     }
     
+    @objc func didTapDeleteAccountButton() {
+        let alert = UIAlertController(title: "Are you sure?", message: "The account will delete!", preferredStyle: .alert)
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { action in
+            DatabaseManager.shared.deleteStoreAccount { result in
+                switch result {
+                case .failure(let error):
+                    print("\(error)")
+                case .success(_):
+                    self.performSegue(withIdentifier: "unwindToSignInFromDealer", sender: self)
+                }
+            }
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true)
+    }
+    
     @objc func didTapSaveButton() {
         
         storeType.resignFirstResponder()
         storeName.resignFirstResponder()
-        adressText.resignFirstResponder()
+        addressText.resignFirstResponder()
         phoneText.resignFirstResponder()
         priceText.resignFirstResponder()
         distanceText.resignFirstResponder()
@@ -328,36 +364,73 @@ class SettingsVC: UIViewController {
                     self.makeAlert(title: "Error", message: "Could not reach your account info")
                     return
                 }
-                let storeObject = StoreModel(email: email,
-                                             id: id,
-                                             storeType: storeType.text!,
-                                             storeName: storeName.text!,
-                                             adress: adressText.text!,
-                                             phone: phoneText.text!,
-                                             minPrice: priceText.text!,
-                                             maxDistance: distanceText.text!,
-                                             openingTime: openingTimeText.text!,
-                                             closingTime: closingTimeText.text!,
-                                             storeLatitude: mapView.annotations[0].coordinate.latitude,
-                                             storeLongitude: mapView.annotations[0].coordinate.longitude)
-                
-                DatabaseManager.shared.saveStorySettings(storePost: storeObject) { success in
-                    if success {
-                        self.makeAlert(title: "Success", message: "Your account has been updated")
-                    } else {
-                        self.makeAlert(title: "Error", message: "Could not updated!")
+                StorageManager.shared.downloadStorePhoto { [self] storePhoto in
+                    switch storePhoto {
+                    case .failure(_):
+                        StorageManager.shared.uplooadPhoto(image: UIImage(systemName: "cart.fill")!, name: "StorePhoto") { [self] uploaded in
+                            switch uploaded {
+                            case .failure(_):
+                                self.makeAlert(title: "Error", message: "Try Again!")
+                            case .success(let resultURL):
+                                let storeObject = StoreModel(email: email,
+                                                             id: id,
+                                                             storeType: storeType.text!,
+                                                             storeName: storeName.text!,
+                                                             adress: addressText.text!,
+                                                             phone: phoneText.text!,
+                                                             minPrice: priceText.text!,
+                                                             maxDistance: distanceText.text!,
+                                                             openingTime: openingTimeText.text!,
+                                                             closingTime: closingTimeText.text!,
+                                                             storeImageUrl: resultURL,
+                                                             storeLatitude: mapView.annotations[0].coordinate.latitude,
+                                                             storeLongitude: mapView.annotations[0].coordinate.longitude)
+                                Task {
+                                do {
+                               let result = try await DatabaseManager.shared.saveStorySettings(storePost: storeObject)
+                                    if result != true {
+                                        self.makeAlert(title: "Error", message: "Could not save!")
+                                    }
+                                } catch {
+                                    self.makeAlert(title: "Error", message: "Could not save!")
+                                }
+                                }
+                            }
+                        }
+                    case .success(let resultURL):
+                        let storeObject = StoreModel(email: email,
+                                                     id: id,
+                                                     storeType: storeType.text!,
+                                                     storeName: storeName.text!,
+                                                     adress: addressText.text!,
+                                                     phone: phoneText.text!,
+                                                     minPrice: priceText.text!,
+                                                     maxDistance: distanceText.text!,
+                                                     openingTime: openingTimeText.text!,
+                                                     closingTime: closingTimeText.text!,
+                                                     storeImageUrl: resultURL,
+                                                     storeLatitude: mapView.annotations[0].coordinate.latitude,
+                                                     storeLongitude: mapView.annotations[0].coordinate.longitude)
+                        Task {
+                        do {
+                       let result = try await DatabaseManager.shared.saveStorySettings(storePost: storeObject)
+                            if result != true {
+                                self.makeAlert(title: "Error", message: "Could not save!")
+                            }
+                        } catch {
+                            self.makeAlert(title: "Error", message: "Could not save!")
+                        }
+                        }
                     }
                 }
             }
-            
         }
-        
     }
     
     @objc private func didTapLogOutButton() {
         AuthManager.shared.logOut { success in
             if success {
-                performSegue(withIdentifier: "unwindToSignInFromDealer", sender: self)
+                self.performSegue(withIdentifier: "unwindToSignInFromDealer", sender: self)
             } else {
                 self.makeAlert(title: "Error", message: "Could not log out")
             }
@@ -365,7 +438,33 @@ class SettingsVC: UIViewController {
     }
     
     private func getSettingsInfo() {
-        
+        DatabaseManager.shared.getSettings { storeSettings in
+            switch storeSettings {
+            case .success(let storeSet):
+                self.storeType.text = storeSet.storeType
+                self.storeName.text = storeSet.storeName
+                self.addressText.text = storeSet.adress
+                self.phoneText.text = storeSet.phone
+                self.priceText.text = storeSet.minPrice
+                self.distanceText.text = storeSet.maxDistance
+                self.openingTimeText.text = storeSet.openingTime
+                self.closingTimeText.text = storeSet.closingTime
+                
+                let annotation = MKPointAnnotation()
+                let location = CLLocationCoordinate2D(latitude: storeSet.storeLatitude, longitude: storeSet.storeLongitude)
+                annotation.coordinate.latitude = location.latitude
+                annotation.coordinate.longitude = location.longitude
+                annotation.title = self.storeName.text
+                annotation.subtitle = self.storeType.text
+                
+                self.mapView.addAnnotation(annotation)
+                self.saveButton.backgroundColor = .systemGreen
+                self.saveButton.setTitleColor(.white, for: .normal)
+                self.saveButton.isEnabled = true
+                
+            case .failure(_): break
+            }
+        }
     }
 }
 
@@ -422,8 +521,8 @@ extension SettingsVC: UITextFieldDelegate {
         if textField == storeType {
             storeName.becomeFirstResponder()
         } else if textField == storeName {
-            adressText.becomeFirstResponder()
-        } else if textField == adressText {
+            addressText.becomeFirstResponder()
+        } else if textField == addressText {
             phoneText.becomeFirstResponder()
         } else if textField == phoneText {
             priceText.becomeFirstResponder()

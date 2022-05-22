@@ -152,13 +152,15 @@ class SignUpVC: UIViewController {
                         if secondPasswordText.text == passwordText.text {
                             let accTypeIndex = customerOrDealer.selectedSegmentIndex
                             let accType = customerOrDealer.titleForSegment(at: accTypeIndex)
-                            AuthManager.shared.registerNewUser(email: emailText.text!, password: passwordText.text!, accType: accType!) { registered in
+                            AuthManager.shared.registerNewUser(email: emailText.text!, password: passwordText.text!, accType: accType!, nameSurname: nameText.text!) { registered in
                                 DispatchQueue.main.async {
                                     if registered {
                                         if self.customerOrDealer.selectedSegmentIndex == 0 {
                                             self.performSegue(withIdentifier: "signUpToCustomer", sender: nil)
+                                            
                                         } else {
                                             self.performSegue(withIdentifier: "signUpToDealer", sender: nil)
+                                            
                                         }
                                     }
                                 }

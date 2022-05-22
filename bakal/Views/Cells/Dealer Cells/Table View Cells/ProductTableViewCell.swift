@@ -8,7 +8,11 @@
 import UIKit
 
 protocol ProductTableViewCellDelegate: AnyObject {
-    func tappedProductionCollection()
+    func tappedProductionCollection(products: [ProductModel]?, index: Int, didTappedInTableViewCell: ProductTableViewCell)
+}
+
+protocol ProductTableViewCellDeleteDelegate: AnyObject {
+    func deleteProductionCollection(products: [ProductModel]?, index: Int, didTappedInTableViewCell: ProductTableViewCell)
 }
 
 class ProductTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -17,6 +21,7 @@ class ProductTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollect
     static let identifier = "ProductTableViewCell"
     
     weak var delegate: ProductTableViewCellDelegate?
+    weak var delDelegate: ProductTableViewCellDeleteDelegate?
     
     var models = [ProductModel]()
     
@@ -25,10 +30,6 @@ class ProductTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollect
     static func nib() -> UINib {
         return UINib(nibName: "ProductTableViewCell", bundle: nil)
     }
-    
-    
-    
-    
       
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -37,13 +38,10 @@ class ProductTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollect
         productsCollectionView.delegate = self
         productsCollectionView.dataSource = self
         productsCollectionView.isUserInteractionEnabled = true
-//        let gestureRec = UITapGestureRecognizer(target: self,
-//                                                action: #selector(didTapCollViewCell))
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
-        super.setSelected(selected, animated: animated)
-        delegate?.tappedProductionCollection()
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        self.delegate?.tappedProductionCollection(products: models, index: indexPath.item, didTappedInTableViewCell: self)
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -53,6 +51,9 @@ class ProductTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollect
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ProductsCollectionViewCell.identifier, for: indexPath) as! ProductsCollectionViewCell
         cell.configure(with: self.models[indexPath.row])
+        cell.deleteThisCell = { [self] in
+            self.delDelegate?.deleteProductionCollection(products: self.models, index: indexPath.item, didTappedInTableViewCell: self)
+        }
         return cell
     }
     
@@ -61,7 +62,11 @@ class ProductTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollect
     }
     
     func configure(with models: [ProductModel]) {
-        self.models = models
-        self.productsCollectionView.reloadData()
+        DispatchQueue.main.async {
+            let sortedModels = models.sorted(by: { $0.date < $1.date })
+            self.models = sortedModels
+            print(self.models)
+            self.productsCollectionView.reloadData()
+        }
     }
 }

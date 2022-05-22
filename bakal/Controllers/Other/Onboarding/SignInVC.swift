@@ -133,9 +133,7 @@ class SignInVC: UIViewController {
             } else {
                 self.makeAlert(title: "Error", message: success)
             }
-        }
-        
-        
+        }       
     }
     
     @IBAction func unwindToSignInFromCustomer(_ unwindSegue: UIStoryboardSegue) {
@@ -161,7 +159,7 @@ extension SignInVC: UITextFieldDelegate {
         if textField == emailText {
             passwordText.becomeFirstResponder()
         } else if textField == passwordText {
-            didTapSignUpButton()
+            didTapSignInButton()
         }
         return true
     }

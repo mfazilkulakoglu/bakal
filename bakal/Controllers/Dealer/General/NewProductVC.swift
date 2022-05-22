@@ -11,6 +11,8 @@ class NewProductVC: UIViewController {
     
     static let initializer = "NewProductVC"
     
+    var product: ProductModel
+    
     private let productPhoto: UIImageView = {
         let image = UIImageView(image: UIImage(systemName: "plus.circle.fill"))
         image.isUserInteractionEnabled = true
@@ -18,7 +20,7 @@ class NewProductVC: UIViewController {
         return image
     }()
     
-    private let productCategoryeText: UITextField = {
+    private let productCategoryText: UITextField = {
         let field = UITextField()
         field.textAlignment = .center
         field.placeholder = "Product Category..."
@@ -137,6 +139,9 @@ class NewProductVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        productCategoryText.delegate = self
+        productNameText.delegate = self
+        productCommentText.delegate = self
         unitPicker.delegate = self
         unitPicker.dataSource = self
         productUnitTypeText.inputView = unitPicker
@@ -150,7 +155,17 @@ class NewProductVC: UIViewController {
                              for: .touchUpInside)
         let gestureRec = UITapGestureRecognizer(target: self, action: #selector(addPhoto))
         productPhoto.addGestureRecognizer(gestureRec)
+        loadProduct()
         
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        if let firstVC = presentingViewController as? MyMarketVC {
+            DispatchQueue.main.async {
+                firstVC.reloadData()
+            }
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -160,12 +175,12 @@ class NewProductVC: UIViewController {
                                     y: tabBarHeight + 20,
                                     width: view.width/3,
                                     height: view.width/3)
-        productCategoryeText.frame = CGRect(x: 25,
-                                            y: productPhoto.bottom + 20,
-                                            width: view.width - 50,
-                                            height: 42)
+        productCategoryText.frame = CGRect(x: 25,
+                                           y: productPhoto.bottom + 20,
+                                           width: view.width - 50,
+                                           height: 42)
         productNameText.frame = CGRect(x: 25,
-                                       y: productCategoryeText.bottom + 10,
+                                       y: productCategoryText.bottom + 10,
                                        width: view.width - 50,
                                        height: 42)
         productCommentText.frame = CGRect(x: 25,
@@ -196,7 +211,7 @@ class NewProductVC: UIViewController {
     
     func addSubviews() {
         view.addSubview(productPhoto)
-        view.addSubview(productCategoryeText)
+        view.addSubview(productCategoryText)
         view.addSubview(productNameText)
         view.addSubview(productCommentText)
         view.addSubview(productUnitText)
@@ -205,6 +220,10 @@ class NewProductVC: UIViewController {
         view.addSubview(stockButton)
         view.addSubview(saveButton)
         
+    }
+    
+    @objc func tappedBackButton() {
+        self.dismiss(animated: true)
     }
     
     @objc func addPhoto() {
@@ -229,13 +248,13 @@ class NewProductVC: UIViewController {
     
     @objc func tappedSaveButton() {
         
-        productCategoryeText.resignFirstResponder()
+        productCategoryText.resignFirstResponder()
         productNameText.resignFirstResponder()
         productCommentText.resignFirstResponder()
         productUnitText.resignFirstResponder()
         productPriceText.resignFirstResponder()
         
-        guard productCategoryeText.text != nil && productCategoryeText.text != "" else {
+        guard productCategoryText.text != nil && productCategoryText.text != "" else {
             makeAlert(title: "Error", message: "Type your product's category name!")
             return
         }
@@ -256,42 +275,64 @@ class NewProductVC: UIViewController {
             return
         }
         
-        StorageManager.shared.uplooadModelPhoto(image: self.productPhoto.image!) { link in
-            if link != nil {
-                let imageLink = link
+        StorageManager.shared.uplooadPhoto(image: self.productPhoto.image!, name: self.productNameText.text!) { uploaded in
+            switch uploaded {
+            case .failure(_):
+                self.makeAlert(title: "Error", message: "Could not save the image!")
+            case . success(let imageLink):
                 DispatchQueue.main.async {
-                    let product = ProductModel(UUID().uuidString,
-                                               self.productCategoryeText.text!,
+                    let product = ProductModel(UUID().uuidString ,
+                                               self.productCategoryText.text!,
                                                self.productNameText.text!,
                                                self.productCommentText.text!,
                                                self.productUnitText.text!,
                                                self.productUnitTypeText.text!,
-                                               imageLink!,
+                                               imageLink,
                                                self.productPriceText.text!,
-                                               self.stockButton.title(for: .normal)!)
-                    DatabaseManager.shared.saveProducts(categoryName: self.productCategoryeText.text!, product: product) { success in
+                                               self.stockButton.title(for: .normal)!, Date.now)
+                    DatabaseManager.shared.saveProducts(categoryName: self.productCategoryText.text!, product: product) { success in
                         if success {
                             self.dismiss(animated: true)
+                            
                         } else {
                             self.makeAlert(title: "Error", message: "Could not save product")
                         }
                     }
                 }
-            } else {
-                self.makeAlert(title: "Error", message: "Image could not save")
             }
         }
     }
     
-    //    init(categoryTitle?: String, product?: ProductModel) {
-    //        self.categoryTitle = categoryTitle
-    //        self.product = product
-    //        super.init(nibName: nil, bundle: nil)
-    //    }
-    //
-    //    required init?(coder: NSCoder) {
-    //        fatalError("init(coder:) has not been implemented")
-    //    }
+    init(product: ProductModel? = nil) {
+        let emptyProduct = ProductModel("", "", "", "", "", "", "", "", "", Date.now)
+        self.product = product ?? emptyProduct
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    private func loadProduct() {
+        if self.product.productPhoto.contains("https") {
+            self.productPhoto.sd_setImage(with: URL(string: self.product.productPhoto))
+        }
+        self.productCategoryText.text = self.product.productCategory
+        self.productNameText.text = self.product.productName
+        self.productCommentText.text = self.product.productComment
+        self.productUnitText.text = self.product.productUnit
+        self.productUnitTypeText.text = self.product.productUnitType
+        self.productPriceText.text = self.product.productPrice
+        if self.product.productStatu == "Available" {
+            self.stockStatu = true
+            self.stockButton.setTitle("Available", for: .normal)
+            self.stockButton.backgroundColor = .systemGreen
+        } else {
+            self.stockButton.setTitle("Not Available", for: .normal)
+            self.stockButton.backgroundColor = .systemRed
+            stockStatu = false
+        }
+    }
     
 }
 
@@ -299,7 +340,7 @@ class NewProductVC: UIViewController {
 
 extension NewProductVC: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if textField == productCategoryeText {
+        if textField == productCategoryText {
             productNameText.becomeFirstResponder()
         } else if textField == productNameText {
             productCommentText.becomeFirstResponder()
@@ -309,6 +350,22 @@ extension NewProductVC: UITextFieldDelegate {
             productPriceText.becomeFirstResponder()
         } else if textField == productPriceText {
             tappedSaveButton()
+        }
+        return true
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        let currentText = textField.text ?? ""
+        guard let stringRange = Range(range, in: currentText) else {
+            return false
+        }
+        let updatedText = currentText.replacingCharacters(in: stringRange, with: string)
+        if textField == self.productNameText {
+            return updatedText.count <= 16
+        } else if textField == self.productCategoryText {
+            return updatedText.count <= 30
+        } else if textField == self.productCommentText {
+            return updatedText.count <= 28
         }
         return true
     }
@@ -338,3 +395,4 @@ extension NewProductVC: UIImagePickerControllerDelegate, UINavigationControllerD
         self.dismiss(animated: true)
     }
 }
+

@@ -23,13 +23,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             let board = UIStoryboard(name: "Main", bundle: nil)
             DispatchQueue.main.async {
                 DatabaseManager.shared.getAccountType(email: currenUser!.email!) { success in
-                    if success == "Customer" {
-                        let tabBar = board.instantiateViewController(withIdentifier: "CustomerTabBar") as! UITabBarController
-                        self.window?.rootViewController = tabBar
-                    } else if success == "Dealer" {
-                        let tabBar = board.instantiateViewController(withIdentifier: "DealerTabBar") as! UITabBarController
-                        self.window?.rootViewController = tabBar
+                    switch success {
+                    case .success(let type):
+                        if type == "Customer" {
+                            let tabBar = board.instantiateViewController(withIdentifier: "CustomerTabBar") as! UITabBarController
+                            self.window?.rootViewController = tabBar
+                        } else if type == "Dealer" {
+                            let tabBar = board.instantiateViewController(withIdentifier: "DealerTabBar") as! UITabBarController
+                            self.window?.rootViewController = tabBar
+                        }
+                    case .failure(_):
+                        break
                     }
+                    
                 }
             }
         }

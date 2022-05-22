@@ -11,13 +11,13 @@ import Darwin
 public class AuthManager {
     static let shared = AuthManager()
     
-    public func registerNewUser(email: String, password: String, accType: String, completion: @escaping (Bool) -> Void) {
+    public func registerNewUser(email: String, password: String, accType: String, nameSurname: String, completion: @escaping (Bool) -> Void) {
         Auth.auth().createUser(withEmail: email, password: password) { authResult, error in
             guard error == nil, authResult != nil else {
                 completion(false)
                 return
             }
-            DatabaseManager.shared.insertNewUser(with: email, accType: accType) { inserted in
+            DatabaseManager.shared.insertNewUser(with: email, accType: accType, nameSurname: nameSurname) { inserted in
                 if inserted {
                     completion(true)
                     return
@@ -31,16 +31,17 @@ public class AuthManager {
     
     public func signInUser(email: String, password: String, completion: @escaping (String) -> Void) {
         DatabaseManager.shared.getAccountType(email: email) { success in
-            if success == "Customer" || success == "Dealer" {
+            switch success {
+            case .success(let type):
                 Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
                     guard authResult != nil, error == nil else {
                         completion(error!.localizedDescription)
                         return
                     }
-                    completion(success)
+                    completion(type)
                 }
-            } else {
-                completion(success)
+            case .failure(let error):
+                completion(error.localizedDescription)
             }
         }
     }
@@ -62,5 +63,15 @@ public class AuthManager {
         } else {
             completion("")
         }
+    }
+    
+    public func deleteUser(completion: @escaping (Bool) -> Void) {
+        Auth.auth().currentUser?.delete(completion: { error in
+            guard error != nil else {
+                completion(false)
+                return
+            }
+            completion(true)
+        })
     }
 }

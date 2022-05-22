@@ -8,7 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		7D82C2B73FB6B3E6D49CD24C /* Pods_bakal.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 384315BBADD5EBAFADAD98E9 /* Pods_bakal.framework */; };
+		8511FF2C2838129B0093840F /* NewOrderVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8511FF2B2838129B0093840F /* NewOrderVC.swift */; };
+		8511FF2E283830610093840F /* FavoriteStoresViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8511FF2D283830610093840F /* FavoriteStoresViewController.swift */; };
 		853FDF6D280453F700F8A2A7 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 853FDF6C280453F700F8A2A7 /* GoogleService-Info.plist */; };
+		85532BD628393509003787B8 /* OrderDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85532BD528393509003787B8 /* OrderDetailViewController.swift */; };
 		85543785280974480069A811 /* NewProductVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 85543784280974480069A811 /* NewProductVC.swift */; };
 		855E1D7E2806E670001BC90D /* MyStoreCategoryTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 855E1D7D2806E670001BC90D /* MyStoreCategoryTVCell.swift */; };
 		8597A7A1280422F000C97BF4 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597A7A0280422F000C97BF4 /* AppDelegate.swift */; };
@@ -22,8 +25,8 @@
 		8597A7CC280426DA00C97BF4 /* MyMarketVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597A7CB280426DA00C97BF4 /* MyMarketVC.swift */; };
 		8597A7CE280426E600C97BF4 /* SettingsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597A7CD280426E600C97BF4 /* SettingsVC.swift */; };
 		8597A7D02804270600C97BF4 /* OrderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597A7CF2804270600C97BF4 /* OrderViewController.swift */; };
-		8597A7D22804271F00C97BF4 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597A7D12804271F00C97BF4 /* SearchViewController.swift */; };
-		8597A7D42804272C00C97BF4 /* FavoritesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597A7D32804272C00C97BF4 /* FavoritesViewController.swift */; };
+		8597A7D22804271F00C97BF4 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597A7D12804271F00C97BF4 /* MapViewController.swift */; };
+		8597A7D42804272C00C97BF4 /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597A7D32804272C00C97BF4 /* CartViewController.swift */; };
 		8597A7D62804273600C97BF4 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597A7D52804273600C97BF4 /* ProfileViewController.swift */; };
 		8597A7D82804274700C97BF4 /* Models.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597A7D72804274700C97BF4 /* Models.swift */; };
 		8597A7DA2804275A00C97BF4 /* AuthManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8597A7D92804275A00C97BF4 /* AuthManager.swift */; };
@@ -38,7 +41,10 @@
 
 /* Begin PBXFileReference section */
 		384315BBADD5EBAFADAD98E9 /* Pods_bakal.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_bakal.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8511FF2B2838129B0093840F /* NewOrderVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewOrderVC.swift; sourceTree = "<group>"; };
+		8511FF2D283830610093840F /* FavoriteStoresViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteStoresViewController.swift; sourceTree = "<group>"; };
 		853FDF6C280453F700F8A2A7 /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = "GoogleService-Info.plist"; sourceTree = SOURCE_ROOT; };
+		85532BD528393509003787B8 /* OrderDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderDetailViewController.swift; sourceTree = "<group>"; };
 		85543784280974480069A811 /* NewProductVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewProductVC.swift; sourceTree = "<group>"; };
 		855E1D7D2806E670001BC90D /* MyStoreCategoryTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyStoreCategoryTVCell.swift; sourceTree = "<group>"; };
 		8597A79D280422F000C97BF4 /* bakal.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = bakal.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -54,8 +60,8 @@
 		8597A7CB280426DA00C97BF4 /* MyMarketVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyMarketVC.swift; sourceTree = "<group>"; };
 		8597A7CD280426E600C97BF4 /* SettingsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsVC.swift; sourceTree = "<group>"; };
 		8597A7CF2804270600C97BF4 /* OrderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderViewController.swift; sourceTree = "<group>"; };
-		8597A7D12804271F00C97BF4 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
-		8597A7D32804272C00C97BF4 /* FavoritesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoritesViewController.swift; sourceTree = "<group>"; };
+		8597A7D12804271F00C97BF4 /* MapViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
+		8597A7D32804272C00C97BF4 /* CartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
 		8597A7D52804273600C97BF4 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		8597A7D72804274700C97BF4 /* Models.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Models.swift; sourceTree = "<group>"; };
 		8597A7D92804275A00C97BF4 /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
@@ -235,6 +241,9 @@
 		8597A7BF2804253600C97BF4 /* General */ = {
 			isa = PBXGroup;
 			children = (
+				8511FF2B2838129B0093840F /* NewOrderVC.swift */,
+				8511FF2D283830610093840F /* FavoriteStoresViewController.swift */,
+				85532BD528393509003787B8 /* OrderDetailViewController.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -243,8 +252,8 @@
 			isa = PBXGroup;
 			children = (
 				8597A7CF2804270600C97BF4 /* OrderViewController.swift */,
-				8597A7D12804271F00C97BF4 /* SearchViewController.swift */,
-				8597A7D32804272C00C97BF4 /* FavoritesViewController.swift */,
+				8597A7D12804271F00C97BF4 /* MapViewController.swift */,
+				8597A7D32804272C00C97BF4 /* CartViewController.swift */,
 				8597A7D52804273600C97BF4 /* ProfileViewController.swift */,
 			);
 			path = "Core Tabs";
@@ -412,17 +421,20 @@
 				8597A7CC280426DA00C97BF4 /* MyMarketVC.swift in Sources */,
 				8597A7DA2804275A00C97BF4 /* AuthManager.swift in Sources */,
 				8597A7D82804274700C97BF4 /* Models.swift in Sources */,
-				8597A7D22804271F00C97BF4 /* SearchViewController.swift in Sources */,
+				8597A7D22804271F00C97BF4 /* MapViewController.swift in Sources */,
+				8511FF2E283830610093840F /* FavoriteStoresViewController.swift in Sources */,
 				8597A7DC2804276200C97BF4 /* DatabaseManager.swift in Sources */,
 				8597A7A1280422F000C97BF4 /* AppDelegate.swift in Sources */,
+				85532BD628393509003787B8 /* OrderDetailViewController.swift in Sources */,
 				8597A7A3280422F000C97BF4 /* SceneDelegate.swift in Sources */,
+				8511FF2C2838129B0093840F /* NewOrderVC.swift in Sources */,
 				8597A7D62804273600C97BF4 /* ProfileViewController.swift in Sources */,
 				8597A7C62804269A00C97BF4 /* SignInVC.swift in Sources */,
 				8597A7E02804278000C97BF4 /* Extensions.swift in Sources */,
 				8597A7CE280426E600C97BF4 /* SettingsVC.swift in Sources */,
 				8597A7DE2804277200C97BF4 /* StorageManager.swift in Sources */,
 				85FB35DB281193B700E7E5CF /* ProductsCollectionViewCell.swift in Sources */,
-				8597A7D42804272C00C97BF4 /* FavoritesViewController.swift in Sources */,
+				8597A7D42804272C00C97BF4 /* CartViewController.swift in Sources */,
 				855E1D7E2806E670001BC90D /* MyStoreCategoryTVCell.swift in Sources */,
 				8597A7D02804270600C97BF4 /* OrderViewController.swift in Sources */,
 			);

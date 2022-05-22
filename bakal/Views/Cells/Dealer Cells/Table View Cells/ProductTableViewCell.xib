@@ -35,7 +35,7 @@
                     <constraint firstItem="w3g-e8-DFe" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="hPt-dX-isJ"/>
                 </constraints>
             </tableViewCellContentView>
-            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <viewLayoutGuide key="safeArea" id="bqF-wk-g6x"/>
             <connections>
                 <outlet property="productsCollectionView" destination="w3g-e8-DFe" id="cSJ-uE-aNc"/>
             </connections>

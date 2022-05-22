@@ -1,42 +1,36 @@
 //
-//  OrderViewController.swift
+//  FavoriteStoresViewController.swift
 //  bakal
 //
-//  Created by Mehmet  Kulakoğlu on 11.04.2022.
+//  Created by Mehmet  Kulakoğlu on 20.05.2022.
 //
 
 import UIKit
 
-class OrderViewController: UIViewController {
+class FavoriteStoresViewController: UIViewController {
     
     private let tableView: UITableView = {
         let tableView = UITableView()
-        return tableView
+       return tableView
     }()
-
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        let tabBarHeight = self.tabBarController?.tabBar.frame.height ?? 49.0
-        tableView.frame = CGRect(x: 0,
+        let tabBarHeight = tabBarController?.tabBar.frame.height ?? 49.0
+        tableView.frame = CGRect(x: 20,
                                  y: tabBarHeight + 10,
-                                 width: view.width,
+                                 width: view.width - 40,
                                  height: view.height - (2 * tabBarHeight + 20))
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.addSubview(tableView)
-        tableView.delegate = self
-        tableView.dataSource = self
     }
-    
-
-
-
 }
 
-extension OrderViewController: UITableViewDelegate, UITableViewDataSource {
+extension FavoriteStoresViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
         cell.textLabel?.text = "Sample"
@@ -48,7 +42,7 @@ extension OrderViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = OrderDetailViewController()
-        self.present(vc, animated: true)
+        let vc = NewOrderVC()
+        present(vc, animated: true)
     }
 }

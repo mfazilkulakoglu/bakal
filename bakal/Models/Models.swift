@@ -7,7 +7,6 @@
 
 import Foundation
 import UIKit
-import FirebaseFirestoreSwift
 
 public struct StoreModel {
     var email: String
@@ -20,6 +19,7 @@ public struct StoreModel {
     var maxDistance: String
     var openingTime: String
     var closingTime: String
+    var storeImageUrl: String
     var storeLatitude: Double
     var storeLongitude: Double
 }
@@ -41,8 +41,9 @@ public struct ProductModel: Codable, Hashable, Equatable {
     var productPhoto: String
     var productPrice: String
     var productStatu: String
+    var date: Date
     
-    init(_ id: String, _ productCategory: String, _ productName: String, _ productComment: String, _ productUnit: String, _ productUnitType: String, _ productPhoto: String, _ productPrice: String, _ productStatu: String)
+    init(_ id: String, _ productCategory: String, _ productName: String, _ productComment: String, _ productUnit: String, _ productUnitType: String, _ productPhoto: String, _ productPrice: String, _ productStatu: String, _ date: Date)
 
     {
         self.id = id
@@ -54,6 +55,7 @@ public struct ProductModel: Codable, Hashable, Equatable {
         self.productPhoto = productPhoto
         self.productPrice = productPrice
         self.productStatu = productStatu
+        self.date = date
         
     }
     
@@ -67,6 +69,17 @@ public struct ProductModel: Codable, Hashable, Equatable {
         case productPhoto = "Image Url"
         case productPrice = "Price"
         case productStatu = "Statu"
+        case date = "Date"
     }
 }
 
+public struct CustomerSettings {
+    var name: String
+    var email: String
+    var id: String
+    var phone: String
+    var address: String
+    var addressTitle: String
+    var customerLatitude: Double
+    var customerLongitude: Double
+}

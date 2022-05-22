@@ -40,7 +40,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="Voq-YB-81e"/>
                     <connections>
-                        <segue destination="wm6-Mz-AgD" kind="presentation" identifier="signUpToDealer" modalPresentationStyle="fullScreen" id="u6B-3b-JPB"/>
+                        <segue destination="wm6-Mz-AgD" kind="presentation" identifier="signUpToDealer" modalPresentationStyle="overFullScreen" id="u6B-3b-JPB"/>
                         <segue destination="8pu-7c-5yH" kind="presentation" identifier="signUpToCustomer" modalPresentationStyle="fullScreen" id="0EY-BH-bnh"/>
                     </connections>
                 </viewController>
@@ -113,9 +113,11 @@
                     </navigationBar>
                     <connections>
                         <segue destination="4B0-EG-NbV" kind="relationship" relationship="rootViewController" id="NRo-Qu-FYn"/>
+                        <segue destination="v5b-bR-Get" kind="unwind" identifier="unwindToSignInFromDealer" unwindAction="unwindToSignInFromDealer:" id="PRF-FC-P0E"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4zi-Jd-r3G" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <exit id="v5b-bR-Get" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
             <point key="canvasLocation" x="2251" y="2050"/>
         </scene>
@@ -169,11 +171,11 @@
             </objects>
             <point key="canvasLocation" x="190" y="-1124"/>
         </scene>
-        <!--Favorites-->
+        <!--Cart-->
         <scene sceneID="Cku-o0-eN0">
             <objects>
                 <navigationController id="091-xb-2HC" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Favorites" image="star.fill" catalog="system" id="XKW-nk-Eat"/>
+                    <tabBarItem key="tabBarItem" title="Cart" image="cart.fill.badge.plus" catalog="system" id="XKW-nk-Eat"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="Bta-Y4-0uZ">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -186,11 +188,11 @@
             </objects>
             <point key="canvasLocation" x="2252" y="-1124"/>
         </scene>
-        <!--Search-->
+        <!--Map-->
         <scene sceneID="jnq-EZ-cPa">
             <objects>
                 <navigationController id="mhk-hk-iM0" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Search" image="magnifyingglass" catalog="system" id="wgQ-Jj-Ddg"/>
+                    <tabBarItem key="tabBarItem" title="Map" image="map.fill" catalog="system" id="wgQ-Jj-Ddg"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="1sj-Oy-7JK">
                         <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -275,10 +277,10 @@
             </objects>
             <point key="canvasLocation" x="3235" y="-1927"/>
         </scene>
-        <!--Favorites View Controller-->
+        <!--Cart View Controller-->
         <scene sceneID="zi7-gT-kZb">
             <objects>
-                <viewController id="1LN-NP-kI9" customClass="FavoritesViewController" customModule="bakal" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="1LN-NP-kI9" customClass="CartViewController" customModule="bakal" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="wxp-hf-Nlu">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -291,10 +293,10 @@
             </objects>
             <point key="canvasLocation" x="2251" y="-1927"/>
         </scene>
-        <!--Search View Controller-->
+        <!--Map View Controller-->
         <scene sceneID="Cds-Px-STm">
             <objects>
-                <viewController id="Bfo-PV-XEn" customClass="SearchViewController" customModule="bakal" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="Bfo-PV-XEn" customClass="MapViewController" customModule="bakal" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="xE0-Sb-txR">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -332,16 +334,16 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="hWF-Gl-aZu"/>
-        <segue reference="s9O-Ll-vZd"/>
+        <segue reference="u6B-3b-JPB"/>
+        <segue reference="0EY-BH-bnh"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="cart.fill" catalog="system" width="128" height="102"/>
+        <image name="cart.fill.badge.plus" catalog="system" width="128" height="106"/>
         <image name="gearshape.fill" catalog="system" width="128" height="121"/>
         <image name="list.bullet" catalog="system" width="128" height="88"/>
-        <image name="magnifyingglass" catalog="system" width="128" height="115"/>
+        <image name="map.fill" catalog="system" width="128" height="110"/>
         <image name="person.fill" catalog="system" width="128" height="120"/>
-        <image name="star.fill" catalog="system" width="128" height="116"/>
         <systemColor name="labelColor">
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
