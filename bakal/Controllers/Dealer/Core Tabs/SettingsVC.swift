@@ -327,7 +327,9 @@ class SettingsVC: UIViewController {
                 case .failure(let error):
                     print("\(error)")
                 case .success(_):
-                    self.performSegue(withIdentifier: "unwindToSignInFromDealer", sender: self)
+                    let loginVC: UIViewController? = self.storyboard?.instantiateViewController(withIdentifier: "SıgnInVC") as?    UIViewController
+                    loginVC?.modalPresentationStyle = .fullScreen
+                    self.present(loginVC!, animated: true, completion: nil)
                 }
             }
         }
@@ -367,7 +369,7 @@ class SettingsVC: UIViewController {
                 StorageManager.shared.downloadStorePhoto { [self] storePhoto in
                     switch storePhoto {
                     case .failure(_):
-                        StorageManager.shared.uplooadPhoto(image: UIImage(systemName: "cart.fill")!, name: "StorePhoto") { [self] uploaded in
+                        StorageManager.shared.uplooadPhoto(image: UIImage(systemName: "plus.circle.fill")!, name: "StorePhoto") { [self] uploaded in
                             switch uploaded {
                             case .failure(_):
                                 self.makeAlert(title: "Error", message: "Try Again!")
@@ -430,7 +432,11 @@ class SettingsVC: UIViewController {
     @objc private func didTapLogOutButton() {
         AuthManager.shared.logOut { success in
             if success {
-                self.performSegue(withIdentifier: "unwindToSignInFromDealer", sender: self)
+                
+                let loginVC: UIViewController? = self.storyboard?.instantiateViewController(withIdentifier: "SıgnInVC") as?    UIViewController
+                loginVC?.modalPresentationStyle = .fullScreen
+                self.present(loginVC!, animated: true, completion: nil)
+     
             } else {
                 self.makeAlert(title: "Error", message: "Could not log out")
             }

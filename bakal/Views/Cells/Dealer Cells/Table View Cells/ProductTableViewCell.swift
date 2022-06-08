@@ -34,7 +34,8 @@ class ProductTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollect
     override func awakeFromNib() {
         super.awakeFromNib()
         
-        productsCollectionView.register(ProductsCollectionViewCell.nib(), forCellWithReuseIdentifier: ProductsCollectionViewCell.identifier)
+        productsCollectionView.register(ProductsCollectionViewCell.nib(),
+                                        forCellWithReuseIdentifier: ProductsCollectionViewCell.identifier)
         productsCollectionView.delegate = self
         productsCollectionView.dataSource = self
         productsCollectionView.isUserInteractionEnabled = true
@@ -65,7 +66,6 @@ class ProductTableViewCell: UITableViewCell, UICollectionViewDelegate, UICollect
         DispatchQueue.main.async {
             let sortedModels = models.sorted(by: { $0.date < $1.date })
             self.models = sortedModels
-            print(self.models)
             self.productsCollectionView.reloadData()
         }
     }

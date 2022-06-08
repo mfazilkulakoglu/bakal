@@ -22,20 +22,9 @@ class MyStoreCategoryTVCell: UITableViewCell {
         return field
     }()
     
-//    public let addProductButton: UIButton = {
-//       let button = UIButton()
-//        button.setImage(UIImage(systemName: "plus.circle.fill"), for: .normal)
-//        button.backgroundColor = .systemBackground
-//        return button
-//    }()
-    
     override func layoutSubviews() {
         super.layoutSubviews()
-//        let buttonWidth = contentView.width / 4
-//        addProductButton.frame = CGRect(x: (contentView.width - 5 - buttonWidth),
-//                                        y: 10,
-//                                        width: buttonWidth,
-//                                        height: contentView.height - 20)
+
         categoryText.frame = CGRect(x: 20,
                                     y: 10,
                                     width: (contentView.width - 70),
@@ -46,21 +35,12 @@ class MyStoreCategoryTVCell: UITableViewCell {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         contentView.clipsToBounds = true
         contentView.addSubview(categoryText)
-//        contentView.addSubview(addProductButton)
         selectionStyle = .none
-        
-//        addProductButton.addTarget(self,
-//                                   action: #selector(didTapAddCategoryButton),
-//                                   for: .touchUpInside)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
-//    @objc func didTapAddCategoryButton() {
-//        delegate?.tappedAddCategoryButton()
-//    }
 }
 
 

@@ -67,7 +67,7 @@ public class AuthManager {
     
     public func deleteUser(completion: @escaping (Bool) -> Void) {
         Auth.auth().currentUser?.delete(completion: { error in
-            guard error != nil else {
+            guard error == nil else {
                 completion(false)
                 return
             }

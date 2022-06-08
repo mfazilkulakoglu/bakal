@@ -13,7 +13,10 @@ class OrderViewController: UIViewController {
         let tableView = UITableView()
         return tableView
     }()
-
+    
+    private var orderList = [OrderInfos]()
+    private let customAlert = ShowOrderDetail()
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         let tabBarHeight = self.tabBarController?.tabBar.frame.height ?? 49.0
@@ -25,30 +28,67 @@ class OrderViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+  
         view.addSubview(tableView)
         tableView.delegate = self
         tableView.dataSource = self
+        customAlert.tableView.delegate = self
+        customAlert.tableView.dataSource = self
+        
+        DispatchQueue.main.async {
+            self.getOrderList()
+            self.tableView.reloadData()
+        }
+        
+        
     }
     
-
-
-
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        DispatchQueue.main.async {
+            self.getOrderList()
+            self.tableView.reloadData()
+        }
+    }
+    
+    private func getOrderList() {
+        DatabaseManager.shared.getOrderInfosToCustomer { orderList in
+            switch orderList {
+            case .failure(_):
+                self.makeAlert(title: "Error", message: "No order")
+                break
+            case .success(let list):
+                self.orderList = list
+                self.tableView.reloadData()
+            }
+        }
+        
+    }
 }
 
 extension OrderViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = UITableViewCell()
-        cell.textLabel?.text = "Sample"
+        cell.textLabel?.text = self.orderList[indexPath.row].storeName
         return cell
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 10
+        return orderList.count
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = OrderDetailViewController()
-        self.present(vc, animated: true)
+        DatabaseManager.shared.getOrderToCustomer(info: orderList[indexPath.row]) { result in
+            switch result {
+            case .failure(_):
+                break
+            case .success(let products):
+                let givenOrder = GivenOrder(products: products,
+                                            orderInfo: self.orderList[indexPath.row])
+                self.customAlert.showAlert(with: givenOrder, on: self)
+            }
+        }
+        
+        
     }
 }

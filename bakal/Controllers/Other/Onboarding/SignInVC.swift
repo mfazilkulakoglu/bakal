@@ -20,6 +20,8 @@ class SignInVC: UIViewController {
         field.layer.cornerRadius = 8.0
         field.layer.borderWidth = 1
         field.layer.borderColor = UIColor.lightGray.cgColor
+        field.textContentType = .emailAddress
+        field.keyboardType = .emailAddress
         field.backgroundColor = .systemBackground
         field.returnKeyType = .continue
         return field
@@ -36,6 +38,8 @@ class SignInVC: UIViewController {
         field.layer.cornerRadius = 8.0
         field.layer.borderWidth = 1
         field.layer.borderColor = UIColor.lightGray.cgColor
+        field.textContentType = .password
+        field.keyboardType = .default
         field.backgroundColor = .systemBackground
         field.returnKeyType = .continue
         field.isSecureTextEntry = true
@@ -134,16 +138,6 @@ class SignInVC: UIViewController {
                 self.makeAlert(title: "Error", message: success)
             }
         }       
-    }
-    
-    @IBAction func unwindToSignInFromCustomer(_ unwindSegue: UIStoryboardSegue) {
-        let sourceViewController = unwindSegue.source
-        // Use data from the view controller which initiated the unwind segue
-    }
-    
-    @IBAction func unwindToSignInFromDealer(_ unwindSegue: UIStoryboardSegue) {
-        let sourceViewController = unwindSegue.source
-        // Use data from the view controller which initiated the unwind segue
     }
     
     @objc func didTapSignUpButton() {

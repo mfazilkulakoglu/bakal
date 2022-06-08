@@ -76,7 +76,7 @@
                             <action selector="deletePressed:" destination="gTV-IL-0wX" eventType="touchUpInside" id="yAW-yE-yNw"/>
                         </connections>
                     </button>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="$" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0YF-EN-5IB">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="€" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0YF-EN-5IB">
                         <rect key="frame" x="158" y="166" width="11" height="14"/>
                         <constraints>
                             <constraint firstAttribute="width" constant="11" id="6Ml-tm-tri"/>

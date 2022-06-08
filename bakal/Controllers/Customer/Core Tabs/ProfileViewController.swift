@@ -271,16 +271,32 @@ class ProfileViewController: UIViewController, MKMapViewDelegate, CLLocationMana
     }
     
     @objc private func didTapDeleteButton() {
-        print("Deleted")
+        let alert = UIAlertController(title: "Are you sure?", message: "The account will delete!", preferredStyle: .alert)
+        let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { action in
+            DatabaseManager.shared.deleteCustomerAccount { result in
+                switch result {
+                case .failure(let error):
+                    print("\(error)")
+                case .success(_):
+                    let loginVC: UIViewController? = self.storyboard?.instantiateViewController(withIdentifier: "SıgnInVC") as?    UIViewController
+                    loginVC?.modalPresentationStyle = .fullScreen
+                    self.present(loginVC!, animated: true, completion: nil)
+                }
+            }
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel)
+        alert.addAction(deleteAction)
+        alert.addAction(cancelAction)
+        self.present(alert, animated: true)
     }
     
     @objc private func didTapLogOutButton() {
         AuthManager.shared.logOut { success in
             if success {
-                print("Success !!!!!!!!!!!!!!!!")
-                performSegue(withIdentifier: "unwindToSignInFromCustomer", sender: self)
+                let loginVC: UIViewController? = self.storyboard?.instantiateViewController(withIdentifier: "SıgnInVC") as?    UIViewController
+                loginVC?.modalPresentationStyle = .fullScreen
+                self.present(loginVC!, animated: true, completion: nil)
             } else {
-            print("Error !!!!!!!!!!!!")
                 self.makeAlert(title: "Error", message: "Could not log out")
             }
         }

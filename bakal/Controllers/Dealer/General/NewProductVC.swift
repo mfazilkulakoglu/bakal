@@ -275,22 +275,29 @@ class NewProductVC: UIViewController {
             return
         }
         
-        StorageManager.shared.uplooadPhoto(image: self.productPhoto.image!, name: self.productNameText.text!) { uploaded in
+        StorageManager.shared.uplooadPhoto(image: self.productPhoto.image!, name: "\(self.productCategoryText.text!)\(self.productNameText.text!)") { uploaded in
             switch uploaded {
             case .failure(_):
                 self.makeAlert(title: "Error", message: "Could not save the image!")
             case . success(let imageLink):
                 DispatchQueue.main.async {
-                    let product = ProductModel(UUID().uuidString ,
-                                               self.productCategoryText.text!,
-                                               self.productNameText.text!,
-                                               self.productCommentText.text!,
-                                               self.productUnitText.text!,
-                                               self.productUnitTypeText.text!,
-                                               imageLink,
-                                               self.productPriceText.text!,
-                                               self.stockButton.title(for: .normal)!, Date.now)
-                    DatabaseManager.shared.saveProducts(categoryName: self.productCategoryText.text!, product: product) { success in
+                    var id = self.product.id
+                    if id == "" {
+                        id = UUID().uuidString
+                    }
+                    self.product = ProductModel(id,
+                                                self.productCategoryText.text!,
+                                                self.productNameText.text!,
+                                                self.productCommentText.text!,
+                                                self.productUnitText.text!,
+                                                self.productUnitTypeText.text!,
+                                                imageLink,
+                                                self.productPriceText.text!,
+                                                self.stockButton.title(for: .normal)!,
+                                                Date.now,
+                                                "",
+                                                "")
+                    DatabaseManager.shared.saveProducts(categoryName: self.productCategoryText.text!, product: self.product) { success in
                         if success {
                             self.dismiss(animated: true)
                             
@@ -304,7 +311,7 @@ class NewProductVC: UIViewController {
     }
     
     init(product: ProductModel? = nil) {
-        let emptyProduct = ProductModel("", "", "", "", "", "", "", "", "", Date.now)
+        let emptyProduct = ProductModel("", "", "", "", "", "", "", "", "", Date.now, "", "")
         self.product = product ?? emptyProduct
         super.init(nibName: nil, bundle: nil)
     }

@@ -10,8 +10,6 @@ import SDWebImage
 
 class MyMarketVC: UIViewController {
     
-    
-    
     static let shared = MyMarketVC()
     
     private var myMarket: Dictionary = [String : [ProductModel]]()
@@ -66,7 +64,9 @@ class MyMarketVC: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        reloadData()
+        DispatchQueue.main.async {
+            self.reloadData()
+        }
     }
     
     public func reloadData() {
@@ -74,7 +74,6 @@ class MyMarketVC: UIViewController {
                 self.myMarket.removeAll(keepingCapacity: false)
                 switch result {
                 case .failure(_):
-                    print("Problemmmmm!!!!!!!!!!!!!")
                     break
                 case .success(let dictionary):
                     if let dictionary = dictionary {
@@ -181,6 +180,7 @@ extension MyMarketVC: UITableViewDelegate, UITableViewDataSource, ProductTableVi
     
     func tappedProductionCollection(products: [ProductModel]?, index: Int, didTappedInTableViewCell: ProductTableViewCell) {
         let vc = NewProductVC(product: products![index])
+        print(products![index])
         self.present(vc, animated: true)
     }
     
@@ -189,7 +189,7 @@ extension MyMarketVC: UITableViewDelegate, UITableViewDataSource, ProductTableVi
         let deleteAction = UIAlertAction(title: "Delete", style: .destructive) { action in
             DatabaseManager.shared.deleteProduct(productId: products![index].id) { success in
                 if success {
-                    StorageManager.shared.deletePhoto(name: products![index].productName) { success in
+                    StorageManager.shared.deletePhoto(name: "\(products![index].productCategory)\(products![index].productName)") { success in
                         if success {
                             DispatchQueue.main.async {
                                 self.reloadData()

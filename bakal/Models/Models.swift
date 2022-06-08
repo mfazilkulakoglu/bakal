@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import MapKit
 
 public struct StoreModel {
     var email: String
@@ -42,8 +43,10 @@ public struct ProductModel: Codable, Hashable, Equatable {
     var productPrice: String
     var productStatu: String
     var date: Date
+    var storeName: String
+    var storeID: String
     
-    init(_ id: String, _ productCategory: String, _ productName: String, _ productComment: String, _ productUnit: String, _ productUnitType: String, _ productPhoto: String, _ productPrice: String, _ productStatu: String, _ date: Date)
+    init(_ id: String, _ productCategory: String, _ productName: String, _ productComment: String, _ productUnit: String, _ productUnitType: String, _ productPhoto: String, _ productPrice: String, _ productStatu: String, _ date: Date, _ storeName: String, _ storeID: String)
 
     {
         self.id = id
@@ -56,6 +59,8 @@ public struct ProductModel: Codable, Hashable, Equatable {
         self.productPrice = productPrice
         self.productStatu = productStatu
         self.date = date
+        self.storeName = storeName
+        self.storeID = storeID
         
     }
     
@@ -70,6 +75,8 @@ public struct ProductModel: Codable, Hashable, Equatable {
         case productPrice = "Price"
         case productStatu = "Statu"
         case date = "Date"
+        case storeName = "Store Name"
+        case storeID = "Store ID"
     }
 }
 
@@ -82,4 +89,35 @@ public struct CustomerSettings {
     var addressTitle: String
     var customerLatitude: Double
     var customerLongitude: Double
+}
+
+public class StoreAnnotation: MKPointAnnotation {
+    var storeModel: StoreModel?
+}
+
+public struct ChosenProduct {
+    var name: String
+    var unit: String
+    var unitType: String
+    var price: String
+    var priceType: String
+    var id: String
+    var dealerID: String
+    var storeName: String
+}
+
+public struct OrderInfos {
+    var statu: String
+    var date: Date
+    var orderID: String
+    var customerID: String
+    var dealerID: String
+    var comment: String
+    var totalCost: String
+    var storeName: String
+}
+
+public struct GivenOrder {
+    var products: [ChosenProduct]
+    var orderInfo: OrderInfos
 }
