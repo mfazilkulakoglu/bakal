@@ -95,6 +95,10 @@ public class StoreAnnotation: MKPointAnnotation {
     var storeModel: StoreModel?
 }
 
+public class CustomerAnnotation: MKPointAnnotation {
+    var customer: CustomerSettings?
+}
+
 public struct ChosenProduct {
     var name: String
     var unit: String
@@ -121,3 +125,5 @@ public struct GivenOrder {
     var products: [ChosenProduct]
     var orderInfo: OrderInfos
 }
+
+

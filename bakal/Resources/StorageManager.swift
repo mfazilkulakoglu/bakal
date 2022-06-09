@@ -23,6 +23,7 @@ public class StorageManager {
                     imageReference.putData(imageData, metadata: nil) { metadata, error in
                         if error != nil {
                             completion(.failure(.couldNotUploadImage))
+                            print(error?.localizedDescription ?? "Problemm!!!!!!!!")
                         } else {
                             imageReference.downloadURL { url, error in
                                 if error == nil || url != nil {

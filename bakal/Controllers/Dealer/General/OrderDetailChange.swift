@@ -107,6 +107,8 @@ public class OrderDetailChange: UIView, UITableViewDelegate, UITableViewDataSour
     public var model: GivenOrder?
     private var id: String?
     private var myTargetView: UIView?
+    private let mapDetail = ShowMap()
+    private var viewController: UIViewController?
     
     func showAlert(with model: GivenOrder, on viewController: UIViewController) {
         
@@ -115,6 +117,7 @@ public class OrderDetailChange: UIView, UITableViewDelegate, UITableViewDataSour
         }
         self.model = model
         self.myTargetView = targetView
+        self.viewController = viewController
         detailView.frame = CGRect(x: -targetView.width,
                                   y: 100,
                                   width: targetView.width - 80,
@@ -270,6 +273,8 @@ public class OrderDetailChange: UIView, UITableViewDelegate, UITableViewDataSour
                     if done {
                         self.detailView.removeFromSuperview()
                         self.backgroundView.removeFromSuperview()
+                        
+                        mapDetail.showAlert(with: self.model!, on: viewController.self!)
                     }
                 }
             }

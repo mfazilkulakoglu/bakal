@@ -136,17 +136,41 @@ class CartViewController: UIViewController, UITableViewDelegate, UITableViewData
         let total = totalLabel.text
         let ordered = NewOrderVC.chosenProducts
         
-        DatabaseManager.shared.giveOrder(description: comment ?? "No comment",
-                                         total: total!,
-                                         orderModel: ordered) { success in
-            if success {
-                NewOrderVC.chosenProducts.removeAll(keepingCapacity: false)
-                self.totalLabel.text = ""
-                self.commentText.text = ""
-                self.tableView.reloadData()
-                self.makeAlert(title: "Success", message: "Your order sent")
-            } else {
-                self.makeAlert(title: "Error", message: "Could not order. Please try again!")
+        let count = ordered.count
+        
+        for i in 0...(count - 2) {
+            if ordered[i].dealerID != ordered[i+1].dealerID {
+                self.makeAlert(title: "Error", message: "You should choose products from only one store!")
+            }
+        }
+        
+        DatabaseManager.shared.getStoreSettings(storeID: ordered[0].dealerID) { storeSettings in
+            switch storeSettings {
+            case .failure(_):
+                self.makeAlert(title: "Error", message: "Could not check store settings")
+                break
+            case .success(let store):
+                let store: StoreModel = store
+                let storePrice = Double(store.minPrice)!
+                let orderPrice = Double(total!)!
+                guard storePrice <= orderPrice else {
+                    self.makeAlert(title: "Sorry", message: "You purchase amount is below the store's minimum price ")
+                    return
+                }
+                
+                DatabaseManager.shared.giveOrder(description: comment ?? "No comment",
+                                                 total: total!,
+                                                 orderModel: ordered) { success in
+                    if success {
+                        NewOrderVC.chosenProducts.removeAll(keepingCapacity: false)
+                        self.totalLabel.text = ""
+                        self.commentText.text = ""
+                        self.tableView.reloadData()
+                        self.makeAlert(title: "Success", message: "Your order sent")
+                    } else {
+                        self.makeAlert(title: "Error", message: "Could not order. Please try again!")
+                    }
+                }
             }
         }
     }

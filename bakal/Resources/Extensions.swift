@@ -55,41 +55,28 @@ extension UIViewController {
     @objc func hideKeyboard() {
         view.endEditing(true)
     }
-
+    
 }
 
-
-
-
-
-//        func buyProductAlert(name: String, comment: String, unit: String, unitType: String, price: String, dealerID: String, id: String) {
-//            let alert = UIAlertController(title: "\(name)", message: "\(comment)", preferredStyle: .actionSheet)
-//            let cancelButton = UIAlertAction(title: "Cancel", style: .cancel)
-//            let addButton = UIAlertAction(title: "Add", style: .default) { action in
-//                self.dismiss(animated: true)
-//            }
-//            alert.addAction(cancelButton)
-//            alert.addAction(addButton)
-//            self.present(alert, animated: true)
-//        }
-//    }
-
-//extension NSDictionary {
-//    var swiftDictionary: Dictionary<String, [ProductModel]> {
-//        var swiftDictionary = Dictionary<String, [ProductModel]>()
-//
-//        for key : Any in self.allKeys {
-//            let stringKey = key as! String
-//            if let keyValue = self.value(forKey: stringKey) {
-//                swiftDictionary[stringKey] = (keyValue as! [ProductModel])
-//            }
-//        }
-//        return swiftDictionary
-//    }
-//}
-
-//NotificationCenter.default.post(name: NSNotification.Name("newData") , object: nil)
-//NotificationCenter.default.addObserver(self, selector: #selector(getData), name: NSNotification.Name(rawValue: "newData"), object: nil)
+@IBDesignable class TopAlignedLabel: UILabel {
+  override func drawText(in rect: CGRect) {
+      if let stringText = text {
+          let stringTextAsNSString = stringText as NSString
+          let labelStringSize = stringTextAsNSString.boundingRect(with: CGSize(width: self.frame.width,height: CGFloat.greatestFiniteMagnitude),
+                                                                          options: NSStringDrawingOptions.usesLineFragmentOrigin,
+                                                                  attributes: [NSAttributedString.Key.font: font!],
+                                                                          context: nil).size
+          super.drawText(in: CGRect(x:0,y: 0,width: self.frame.width, height:ceil(labelStringSize.height)))
+      } else {
+          super.drawText(in: rect)
+      }
+  }
+  override func prepareForInterfaceBuilder() {
+      super.prepareForInterfaceBuilder()
+      layer.borderWidth = 1
+      layer.borderColor = UIColor.black.cgColor
+  }
+}
 
 
 // MARK: Links

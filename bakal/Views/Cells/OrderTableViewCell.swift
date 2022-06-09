@@ -39,17 +39,17 @@ class OrderTableViewCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        priceTypeLabel.frame = CGRect(x: contentView.width - 13,
+        priceTypeLabel.frame = CGRect(x: contentView.width - 15,
                                       y: 5,
-                                      width: 8,
+                                      width: 9,
                                       height: 40)
         priceLabel.frame = CGRect(x: priceTypeLabel.left - 65,
                                   y: 5,
                                   width: 60,
                                   height: 40)
-        unitTypeLabel.frame = CGRect(x: priceLabel.left - 45,
+        unitTypeLabel.frame = CGRect(x: priceLabel.left - 50,
                                      y: 5,
-                                     width: 40,
+                                     width: 45,
                                      height: 40)
         unitLabel.frame = CGRect(x: unitTypeLabel.left - 55,
                                  y: 5,

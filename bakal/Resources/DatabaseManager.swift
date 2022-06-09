@@ -76,8 +76,8 @@ public class DatabaseManager {
         }
     }
     
-    public func saveStorySettings(storePost: StoreModel) async throws -> Bool {
-        
+    public func saveStorySettings(storePost: StoreModel, completion: @escaping (Result<Bool, FetchDownloadStoreError>) -> Void) {
+        let batch = self.database.batch()
         let firestoreStorePost: [String : Any] = [
             "ID": storePost.id,
             "Email": storePost.email,
@@ -95,10 +95,17 @@ public class DatabaseManager {
         ]
         let key = storePost.email.safeDatabaseKey()
         reference = database.document("Dealers/\(storePost.id)/\(key)/Settings")
-        try await reference.setData(firestoreStorePost, merge: true)
         secondReference = self.database.document("Stores/\(storePost.id)")
-        try await secondReference.setData(firestoreStorePost, merge: true)
-        return true
+        batch.setData(firestoreStorePost, forDocument: reference, merge: true)
+        batch.setData(firestoreStorePost, forDocument: secondReference, merge: true)
+        
+        batch.commit { error in
+            guard error == nil else {
+                completion(.failure(.badURL))
+                return
+            }
+            completion(.success(true))
+        }
     }
     
     public func getSettings(completion: @escaping (Result<StoreModel, FetchProductError>) -> Void) {
@@ -677,6 +684,32 @@ public class DatabaseManager {
         }
         
     }
+    
+    public func getCustomer(id: String, completion: @escaping (Result<CustomerSettings, FetchProductError>) -> Void) {
+            self.reference = self.database.document("Customers/\(id)")
+            self.reference.getDocument { snapshot, error in
+                guard snapshot != nil && error == nil else {
+                    completion(.failure(.noData))
+                    return
+                }
+                let data = snapshot!.data()
+                if data != nil {
+                    let customer = CustomerSettings(name: data!["Name, Surname"] as! String,
+                                                    email: data!["Email"] as! String,
+                                                    id: data!["ID"] as! String,
+                                                    phone: data!["Phone"] as! String,
+                                                    address: data!["Address"] as! String,
+                                                    addressTitle: data!["Address Title"] as! String,
+                                                    customerLatitude: data!["Latitude"] as! Double,
+                                                    customerLongitude: data!["Longitude"] as! Double)
+                    completion(.success(customer))
+                } else {
+                    completion(.failure(.badUrl))
+                }
+            }
+        
+    }
+    
     
     public enum FetchDownloadOrdersError: Error {
         case noAccountData

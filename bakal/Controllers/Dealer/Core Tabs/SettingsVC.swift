@@ -371,8 +371,8 @@ class SettingsVC: UIViewController {
                     case .failure(_):
                         StorageManager.shared.uplooadPhoto(image: UIImage(systemName: "plus.circle.fill")!, name: "StorePhoto") { [self] uploaded in
                             switch uploaded {
-                            case .failure(_):
-                                self.makeAlert(title: "Error", message: "Try Again!")
+                            case .failure(let error):
+                                self.makeAlert(title: "Error", message: error.localizedDescription)
                             case .success(let resultURL):
                                 let storeObject = StoreModel(email: email,
                                                              id: id,
@@ -387,15 +387,13 @@ class SettingsVC: UIViewController {
                                                              storeImageUrl: resultURL,
                                                              storeLatitude: mapView.annotations[0].coordinate.latitude,
                                                              storeLongitude: mapView.annotations[0].coordinate.longitude)
-                                Task {
-                                do {
-                               let result = try await DatabaseManager.shared.saveStorySettings(storePost: storeObject)
-                                    if result != true {
+                                DatabaseManager.shared.saveStorySettings(storePost: storeObject) { result in
+                                    switch result {
+                                    case .failure(_):
                                         self.makeAlert(title: "Error", message: "Could not save!")
+                                    case .success(_):
+                                        self.makeAlert(title: "Success", message: "Your settings saved")
                                     }
-                                } catch {
-                                    self.makeAlert(title: "Error", message: "Could not save!")
-                                }
                                 }
                             }
                         }
@@ -413,15 +411,14 @@ class SettingsVC: UIViewController {
                                                      storeImageUrl: resultURL,
                                                      storeLatitude: mapView.annotations[0].coordinate.latitude,
                                                      storeLongitude: mapView.annotations[0].coordinate.longitude)
-                        Task {
-                        do {
-                       let result = try await DatabaseManager.shared.saveStorySettings(storePost: storeObject)
-                            if result != true {
+                        
+                        DatabaseManager.shared.saveStorySettings(storePost: storeObject) { result in
+                            switch result {
+                            case .failure(_):
                                 self.makeAlert(title: "Error", message: "Could not save!")
+                            case .success(_):
+                                self.makeAlert(title: "Success", message: "Your settings saved")
                             }
-                        } catch {
-                            self.makeAlert(title: "Error", message: "Could not save!")
-                        }
                         }
                     }
                 }
