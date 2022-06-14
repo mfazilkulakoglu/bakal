@@ -10,7 +10,10 @@ As a dealer, you should save your settings like store's name, delivery distance,
 
 
 As a customer, you should save your settings like dealer. You'll see the all stores in map tab bar. You can see the products when you touch the store pin that you want. You can add products to cart, if it is available. So you can give an orders, follow your orders' status like "Preparing", "On the Way". 
+
+Left one is dealer interface, right one is customer.
 ![dealerInterface](https://user-images.githubusercontent.com/91637235/173698867-1098a37d-c25c-4604-ac0b-3a8c0266b477.gif)
+
 ![customerInterface](https://user-images.githubusercontent.com/91637235/173698883-2158690b-06aa-460f-aedd-ee83cf5633e3.gif)
 
 ### Built With
