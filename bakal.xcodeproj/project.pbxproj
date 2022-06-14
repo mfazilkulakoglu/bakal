@@ -189,6 +189,7 @@
 		8597A7B52804231F00C97BF4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				85E4368528563638003CCC6C /* General */,
 				855E1D7C2806E496001BC90D /* Cells */,
 				8597A7A9280422F100C97BF4 /* Assets.xcassets */,
 				8597A7B8280423AC00C97BF4 /* Storyboards */,
@@ -260,9 +261,6 @@
 			isa = PBXGroup;
 			children = (
 				85543784280974480069A811 /* NewProductVC.swift */,
-				85ECD8D128511E6700EFBC5D /* OrderDetailChange.swift */,
-				85D91E922851F11700F6B8B9 /* ShowMap.swift */,
-				85D91E9428522E5E00F6B8B9 /* CustomerDetail.swift */,
 			);
 			path = General;
 			sourceTree = "<group>";
@@ -270,8 +268,6 @@
 		8597A7BD2804242D00C97BF4 /* Customer */ = {
 			isa = PBXGroup;
 			children = (
-				85A4A0BC28416DE500E825FA /* AlertAnimate.swift */,
-				85FCFCCB284CDC7800B4F9EA /* OrderDetail.swift */,
 				8597A7BF2804253600C97BF4 /* General */,
 				8597A7C02804253C00C97BF4 /* Core Tabs */,
 			);
@@ -305,6 +301,34 @@
 				8597A7D52804273600C97BF4 /* ProfileViewController.swift */,
 			);
 			path = "Core Tabs";
+			sourceTree = "<group>";
+		};
+		85E4368528563638003CCC6C /* General */ = {
+			isa = PBXGroup;
+			children = (
+				85E4368728563651003CCC6C /* Dealer */,
+				85E4368628563646003CCC6C /* Customer */,
+			);
+			path = General;
+			sourceTree = "<group>";
+		};
+		85E4368628563646003CCC6C /* Customer */ = {
+			isa = PBXGroup;
+			children = (
+				85A4A0BC28416DE500E825FA /* AlertAnimate.swift */,
+				85FCFCCB284CDC7800B4F9EA /* OrderDetail.swift */,
+			);
+			path = Customer;
+			sourceTree = "<group>";
+		};
+		85E4368728563651003CCC6C /* Dealer */ = {
+			isa = PBXGroup;
+			children = (
+				85ECD8D128511E6700EFBC5D /* OrderDetailChange.swift */,
+				85D91E922851F11700F6B8B9 /* ShowMap.swift */,
+				85D91E9428522E5E00F6B8B9 /* CustomerDetail.swift */,
+			);
+			path = Dealer;
 			sourceTree = "<group>";
 		};
 		85FB35D22811897D00E7E5CF /* Dealer Cells */ = {
@@ -668,7 +692,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -705,7 +729,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
