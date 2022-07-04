@@ -35,10 +35,7 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         locationManager.requestWhenInUseAuthorization()
         locationManager.startUpdatingLocation()
         view.addSubview(mapView)
-        navigationController?.navigationBar.topItem?.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "star.fill"),
-                                                                                          style: .plain,
-                                                                                          target: self,
-                                                                                          action: #selector(didTapFavorites))
+
         DispatchQueue.main.async {
             self.getStoresInfo()
         }
@@ -50,14 +47,6 @@ class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerD
         let span = MKCoordinateSpan(latitudeDelta: 0.035, longitudeDelta: 0.035)
         let region = MKCoordinateRegion(center: location, span: span)
         mapView.setRegion(region, animated: true)
-    }
-    
-    @objc func didTapFavorites() {
-        
-        DispatchQueue.main.async {
-            let vc = FavoriteStoresViewController()
-            self.show(vc, sender: nil)
-        }
     }
 
     private func getStoresInfo() {
