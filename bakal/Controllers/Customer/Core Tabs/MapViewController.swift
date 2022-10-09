@@ -7,6 +7,7 @@
 
 import UIKit
 import MapKit
+import SDWebImage
 
 class MapViewController: UIViewController, MKMapViewDelegate, CLLocationManagerDelegate {
     

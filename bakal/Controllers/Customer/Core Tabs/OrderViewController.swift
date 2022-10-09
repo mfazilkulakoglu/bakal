@@ -2,7 +2,7 @@
 //  OrderViewController.swift
 //  bakal
 //
-//  Created by Mehmet  Kulakoğlu on 11.04.2022.
+//  Created by Mehmet Kulakoğlu on 11.04.2022.
 //
 
 import UIKit

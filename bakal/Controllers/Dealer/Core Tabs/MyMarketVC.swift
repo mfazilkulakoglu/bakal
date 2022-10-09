@@ -139,6 +139,8 @@ extension MyMarketVC: UIImagePickerControllerDelegate, UINavigationControllerDel
     }
 }
 
+// MARK: TableView Functions
+
 extension MyMarketVC: UITableViewDelegate, UITableViewDataSource, ProductTableViewCellDelegate, ProductTableViewCellDeleteDelegate {
     
     func numberOfSections(in tableView: UITableView) -> Int {

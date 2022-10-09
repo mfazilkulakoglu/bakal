@@ -68,8 +68,14 @@ public class StorageManager {
             if email != "" && id != "" {
                 let key = email.safeDatabaseKey()
                 let imageReference = self.bucket.child("Dealer/Media/\(key)/\(id)/\(name).jpg")
-                imageReference.delete()
-                completion(true)
+                imageReference.delete { error in
+                    if error != nil {
+                        completion(false)
+                    } else {
+                        completion(true)
+                    }
+                }
+                
             } else {
                 completion(false)
             }
